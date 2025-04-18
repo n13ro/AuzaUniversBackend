@@ -1,7 +1,6 @@
 ﻿using DataAccess.Entites;
 using DataAccess.Repository.Stud;
 
-
 namespace BusinessLogic.Services.Stud
 {
     internal class StudentService(IStudentRepository studentRepository) : IStudentService
@@ -18,6 +17,27 @@ namespace BusinessLogic.Services.Stud
             };
 
             await studentRepository.AddAsync(newStudent, cancellationToken);
+        }
+
+        public async Task DeleteAsync(int id, CancellationToken cancellationToken = default)
+        {
+            await studentRepository.DeleteAsync(id, cancellationToken);
+        }
+
+        public async Task<IEnumerable<Student>> GetAllAsync(CancellationToken cancellationToken = default)
+        {
+            var students = await studentRepository.GetAllAsync(cancellationToken);
+            return students;
+        }
+
+        public async Task GetByIdAsync(int id, CancellationToken cancellationToken = default)
+        {
+            await studentRepository.GetByIdAsync(id, cancellationToken);
+        }
+
+        public Task UpdateAsync(Student student, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
         }
     }
 }

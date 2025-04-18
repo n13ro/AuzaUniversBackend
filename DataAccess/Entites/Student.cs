@@ -17,5 +17,6 @@ namespace DataAccess.Entites
         public int? MentorId { get; set; }
         public Mentor? Mentor { get; set; }
 
+        
     }
 }

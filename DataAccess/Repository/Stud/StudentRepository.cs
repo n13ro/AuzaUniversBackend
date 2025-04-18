@@ -17,9 +17,11 @@ namespace DataAccess.Repository.Stud
             await ctx.SaveChangesAsync(cancellationToken);
         }
 
-        public Task DeleteAsync(int id, CancellationToken cancellationToken = default)
+        public async Task DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+           var OneStud =  await ctx.Students.FirstAsync(c => c.Id == id, cancellationToken);
+           ctx.Students.Remove(OneStud);
+           await ctx.SaveChangesAsync(cancellationToken);
         }
 
         public async Task<IEnumerable<Student>> GetAllAsync(CancellationToken cancellationToken = default)
@@ -30,7 +32,7 @@ namespace DataAccess.Repository.Stud
 
         public async Task<Student> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            var oneStud = await ctx.Students.FirstAsync(p=>p.Id == id, cancellationToken);
+            var oneStud = await ctx.Students.FirstAsync(c=>c.Id == id, cancellationToken);
             return oneStud;
         }
 

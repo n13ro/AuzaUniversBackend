@@ -30,9 +30,15 @@ public class TestStudentServiсe
         //arr
         var repObj = new Mock<IStudentRepository>();
         // Настройте заглушку для возврата списка с элементами
-        var students = new List<Student>
+        var students = new HashSet<Student>
         {
-            new Student { Email = "S@g", FirstName = "dan", Id = 1, LastName = "danon" },
+            new Student 
+            { 
+                Email = "S@g", 
+                FirstName = "dan", 
+                Id = 1, 
+                LastName = "danon" 
+            },
         };
         repObj.Setup(obj => obj.GetAllAsync(It.IsAny<CancellationToken>()))
               .ReturnsAsync(students);
@@ -40,11 +46,11 @@ public class TestStudentServiсe
         var service = new TestStudentServiсe(repObj.Object);
 
         //act
-        var Result = await service.GetAllStudTest();
+        var result = await service.GetAllStudTest();
 
         //assert
-        Assert.NotNull(Result);
-        Assert.NotEmpty(Result);
+        Assert.NotNull(result);
+        Assert.NotEmpty(result);
     }
 
     [Fact]
@@ -53,7 +59,14 @@ public class TestStudentServiсe
         //arr
         var repObj = new Mock<IStudentRepository>();
         // Настройте заглушку для возврата списка с элементами
-        var oneStud = new Student { Id = 1, Name= "Danil", Email = "fsdfs", FirstName= "dfsf", LastName= "Danil" };
+        var oneStud = new Student 
+        { 
+            Id = 1, 
+            Name= "Danil", 
+            Email = "fsdfs", 
+            FirstName= "dfsf", 
+            LastName= "Danil" 
+        };
 
         repObj.Setup(obj => obj.GetByIdAsync(1, It.IsAny<CancellationToken>()))
             .ReturnsAsync(oneStud);
@@ -62,7 +75,7 @@ public class TestStudentServiсe
 
         //act
         var result = await service.GetStudByIdAsync(1, CancellationToken.None);
-
+        
         //assert
         Assert.NotNull(result);
         Assert.Equal(oneStud.Id, result.Id);

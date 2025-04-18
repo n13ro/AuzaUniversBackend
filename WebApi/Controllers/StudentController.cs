@@ -4,15 +4,37 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
+    
     public class StudentController(IStudentService studentService) : ControllerBase
     {
-        [HttpPost]
-        public async Task<IActionResult> AddAsync(string Name, string FirstName, string LastName, string Email, string Phone)
+        [HttpGet("GetAll")]
+        public async Task GetAll(CancellationToken cancellationToken)
         {
-            await studentService.AddAsync(Name, FirstName, LastName, Email, Phone);
+            await studentService.GetAllAsync(cancellationToken);
+        }
+        [HttpGet("GetById")]
+        public async Task GetByIdAsync(int id, CancellationToken cancellationToken)
+        {
+            await studentService.GetByIdAsync(id, cancellationToken);
+        }
+
+        [HttpPost("Add")]
+        public async Task<IActionResult> AddAsync(string Name, string FirstName, string LastName, string Email, string Phone, CancellationToken cancellationToken)
+        {
+            await studentService.AddAsync(Name, FirstName, LastName, Email, Phone, cancellationToken);
             return Ok(new {mess = "Student is created"}); 
+        }
+        //[HttpPut("Update")]
+        //public async Task UpdateAsync(Student student, CancellationToken cancellationToken)
+        //{
+        //    await studentService.UpdateAsync();
+        //}
+        [HttpDelete("Delete")]
+        public async Task DeleteAsync(int id, CancellationToken cancellationToken)
+        {
+            await studentService.DeleteAsync(id, cancellationToken);
         }
     }
 }
