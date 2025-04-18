@@ -45,7 +45,6 @@ public class TestStudentServiñe
         //assert
         Assert.NotNull(Result);
         Assert.NotEmpty(Result);
-        //Assert.Empty(Result);
     }
 
     [Fact]
@@ -53,6 +52,7 @@ public class TestStudentServiñe
     {
         //arr
         var repObj = new Mock<IStudentRepository>();
+        // Íàñòðîéòå çàãëóøêó äëÿ âîçâðàòà ñïèñêà ñ ýëåìåíòàìè
         var oneStud = new Student { Id = 1, Name= "Danil", Email = "fsdfs", FirstName= "dfsf", LastName= "Danil" };
 
         repObj.Setup(obj => obj.GetByIdAsync(1, It.IsAny<CancellationToken>()))
