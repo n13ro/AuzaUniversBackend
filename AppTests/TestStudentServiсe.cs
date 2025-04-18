@@ -68,7 +68,6 @@ public class TestStudentServiñe
         Assert.Equal(oneStud.Id, result.Id);
         Assert.Equal(oneStud.Name, result.Name);
         Assert.Equal(oneStud.FirstName, result.FirstName);
-        
 
     }
 
