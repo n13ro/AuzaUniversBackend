@@ -9,11 +9,11 @@ namespace DataAccess.Repository.Stud
 {
     public interface IStudentRepository
     {
-        Task<IEnumerable<Student>> GetAllAsync(CancellationToken cancellationToken = default);
-        Task<Student> GetByIdAsync(int id, CancellationToken cancellationToken = default);
-        Task AddAsync(Student student, CancellationToken cancellationToken = default);
-        Task UpdateAsync(Student student, CancellationToken cancellationToken = default);
-        Task DeleteAsync(int id, CancellationToken cancellationToken = default);
+        Task<IEnumerable<Student>> GetAllStudentRepositoryAsync(CancellationToken cancellationToken = default);
+        Task<Student> GetByIdStudentRepositoryAsync(int id, CancellationToken cancellationToken = default);
+        Task AddStudentRepositoryAsync(Student student, CancellationToken cancellationToken = default);
+        Task UpdateStudentRepositoryAsync(Student student, CancellationToken cancellationToken = default);
+        Task DeleteStudentRepositoryAsync(int id, CancellationToken cancellationToken = default);
 
     }
 }

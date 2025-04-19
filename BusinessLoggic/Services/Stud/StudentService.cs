@@ -5,7 +5,7 @@ namespace BusinessLogic.Services.Stud
 {
     internal class StudentService(IStudentRepository studentRepository) : IStudentService
     {
-        public async Task AddAsync(string Name, string FirstName, string LastName, string Email, string Phone, CancellationToken cancellationToken = default)
+        public async Task AddStudentServiceAsync(string Name, string FirstName, string LastName, string Email, string Phone, CancellationToken cancellationToken = default)
         {
             var newStudent = new Student
             {
@@ -16,26 +16,26 @@ namespace BusinessLogic.Services.Stud
                 Phone = Phone,
             };
 
-            await studentRepository.AddAsync(newStudent, cancellationToken);
+            await studentRepository.AddStudentRepositoryAsync(newStudent, cancellationToken);
         }
 
-        public async Task DeleteAsync(int id, CancellationToken cancellationToken = default)
+        public async Task DeleteStudentServiceAsync(int id, CancellationToken cancellationToken = default)
         {
-            await studentRepository.DeleteAsync(id, cancellationToken);
+            await studentRepository.DeleteStudentRepositoryAsync(id, cancellationToken);
         }
 
-        public async Task<IEnumerable<Student>> GetAllAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Student>> GetAllStudentServiceAsync(CancellationToken cancellationToken = default)
         {
-            var students = await studentRepository.GetAllAsync(cancellationToken);
+            var students = await studentRepository.GetAllStudentRepositoryAsync(cancellationToken);
             return students;
         }
 
-        public async Task GetByIdAsync(int id, CancellationToken cancellationToken = default)
+        public async Task GetByIdStudentServiceAsync(int id, CancellationToken cancellationToken = default)
         {
-            await studentRepository.GetByIdAsync(id, cancellationToken);
+            await studentRepository.GetByIdStudentRepositoryAsync(id, cancellationToken);
         }
 
-        public Task UpdateAsync(Student student, CancellationToken cancellationToken = default)
+        public Task UpdateStudentServiceAsync(Student student, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }

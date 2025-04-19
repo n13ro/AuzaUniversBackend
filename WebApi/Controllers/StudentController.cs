@@ -12,18 +12,18 @@ namespace WebApi.Controllers
         [HttpGet("GetAll")]
         public async Task GetAll(CancellationToken cancellationToken)
         {
-            await studentService.GetAllAsync(cancellationToken);
+            await studentService.GetAllStudentServiceAsync(cancellationToken);
         }
         [HttpGet("GetById")]
         public async Task GetByIdAsync(int id, CancellationToken cancellationToken)
         {
-            await studentService.GetByIdAsync(id, cancellationToken);
+            await studentService.GetByIdStudentServiceAsync(id, cancellationToken);
         }
 
         [HttpPost("Add")]
         public async Task<IActionResult> AddAsync(string Name, string FirstName, string LastName, string Email, string Phone, CancellationToken cancellationToken)
         {
-            await studentService.AddAsync(Name, FirstName, LastName, Email, Phone, cancellationToken);
+            await studentService.AddStudentServiceAsync(Name, FirstName, LastName, Email, Phone, cancellationToken);
             return Ok(new {mess = "Student is created"}); 
         }
         //[HttpPut("Update")]
@@ -34,7 +34,7 @@ namespace WebApi.Controllers
         [HttpDelete("Delete")]
         public async Task DeleteAsync(int id, CancellationToken cancellationToken)
         {
-            await studentService.DeleteAsync(id, cancellationToken);
+            await studentService.DeleteStudentServiceAsync(id, cancellationToken);
         }
     }
 }

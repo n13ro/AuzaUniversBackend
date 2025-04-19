@@ -17,11 +17,11 @@ public class TestStudentServiñe
     }
     public async Task<IEnumerable<Student>> GetAllStudTest()
     {
-        return await _studentRepository.GetAllAsync();
+        return await _studentRepository.GetAllStudentRepositoryAsync();
     }
     public async Task<Student> GetStudByIdAsync(int id, CancellationToken cancellationToken)
     {
-        return await _studentRepository.GetByIdAsync(id, cancellationToken);
+        return await _studentRepository.GetByIdStudentRepositoryAsync(id, cancellationToken);
     }
 
     [Fact]
@@ -40,7 +40,7 @@ public class TestStudentServiñe
                 LastName = "danon" 
             },
         };
-        repObj.Setup(obj => obj.GetAllAsync(It.IsAny<CancellationToken>()))
+        repObj.Setup(obj => obj.GetAllStudentRepositoryAsync(It.IsAny<CancellationToken>()))
               .ReturnsAsync(students);
 
         var service = new TestStudentServiñe(repObj.Object);
@@ -68,7 +68,7 @@ public class TestStudentServiñe
             LastName= "Danil" 
         };
 
-        repObj.Setup(obj => obj.GetByIdAsync(1, It.IsAny<CancellationToken>()))
+        repObj.Setup(obj => obj.GetByIdStudentRepositoryAsync(1, It.IsAny<CancellationToken>()))
             .ReturnsAsync(oneStud);
 
         var service = new TestStudentServiñe(repObj.Object);

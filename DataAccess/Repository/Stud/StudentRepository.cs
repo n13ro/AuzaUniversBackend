@@ -11,32 +11,32 @@ namespace DataAccess.Repository.Stud
     internal class StudentRepository(AppDbContext ctx) : IStudentRepository
     {
 
-        public async Task AddAsync(Student student, CancellationToken cancellationToken = default)
+        public async Task AddStudentRepositoryAsync(Student student, CancellationToken cancellationToken = default)
         {
             await ctx.Students.AddAsync(student, cancellationToken);
             await ctx.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task DeleteAsync(int id, CancellationToken cancellationToken = default)
+        public async Task DeleteStudentRepositoryAsync(int id, CancellationToken cancellationToken = default)
         {
            var OneStud =  await ctx.Students.FirstAsync(c => c.Id == id, cancellationToken);
            ctx.Students.Remove(OneStud);
            await ctx.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<Student>> GetAllAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Student>> GetAllStudentRepositoryAsync(CancellationToken cancellationToken = default)
         {
-            return await ctx.Students.ToListAsync(cancellationToken);
+            return await ctx.Students.AsNoTracking().ToListAsync(cancellationToken);
         
         }
 
-        public async Task<Student> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+        public async Task<Student> GetByIdStudentRepositoryAsync(int id, CancellationToken cancellationToken = default)
         {
             var oneStud = await ctx.Students.FirstAsync(c=>c.Id == id, cancellationToken);
             return oneStud;
         }
 
-        public Task UpdateAsync(Student student, CancellationToken cancellationToken = default)
+        public Task UpdateStudentRepositoryAsync(Student student, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }

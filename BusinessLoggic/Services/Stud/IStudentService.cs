@@ -9,12 +9,12 @@ namespace BusinessLogic.Services.Stud
 {
     public interface IStudentService
     {
-        Task<IEnumerable<Student>> GetAllAsync(CancellationToken cancellationToken = default);
-        Task GetByIdAsync(int id,CancellationToken cancellationToken = default);
-        Task AddAsync(string Name,string FirstName, string LastName, string Email,string Phone, CancellationToken cancellationToken = default);
+        Task<IEnumerable<Student>> GetAllStudentServiceAsync(CancellationToken cancellationToken = default);
+        Task GetByIdStudentServiceAsync(int id,CancellationToken cancellationToken = default);
+        Task AddStudentServiceAsync(string Name,string FirstName, string LastName, string Email,string Phone, CancellationToken cancellationToken = default);
 
-        Task UpdateAsync(Student student, CancellationToken cancellationToken = default);
+        Task UpdateStudentServiceAsync(Student student, CancellationToken cancellationToken = default);
 
-        Task DeleteAsync(int id, CancellationToken cancellationToken = default);
+        Task DeleteStudentServiceAsync(int id, CancellationToken cancellationToken = default);
     }
 }
