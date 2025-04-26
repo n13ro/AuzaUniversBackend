@@ -9,9 +9,9 @@ public static class Extensions
     public static IServiceCollection AddDataAccess(this IServiceCollection services)
     {
         services.AddScoped<IStudentRepository, StudentRepository>();
-        services.AddDbContext<AppDbContext>(x =>
+        services.AddDbContext<AppDbContext>(ctx =>
         {
-            x.UseNpgsql("Host=localhost;Port=5432;Database=AuzaUniversDb;Username=postgres;Password=12345");
+            ctx.UseNpgsql("Host=localhost;Port=5432;Database=AuzaUniversDb;Username=postgres;Password=12345");
         });
 
         return services;
