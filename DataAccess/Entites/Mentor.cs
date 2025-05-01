@@ -14,6 +14,7 @@ namespace DataAccess.Entites
         public string Email { get; set; }
         public string Phone { get; set; }
 
-        public HashSet<Student> Students { get; set; } = new ();
+        public HashSet<Group> Groups { get; set; } = new();
+        public HashSet<Pair> Pairs { get; set; } = new();
     }
 }

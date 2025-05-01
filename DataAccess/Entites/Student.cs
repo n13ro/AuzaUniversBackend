@@ -14,9 +14,11 @@ namespace DataAccess.Entites
         public string Email { get; set; }
         public string Phone { get; set; }
 
-        public int? MentorId { get; set; }
-        public Mentor? Mentor { get; set; }
+        public int? MyPairId { get; set; }
+        public Pair? MyPair { get; set; }
 
-        
+        public int? MyGroupId { get; set; }
+        public Group? MyGroup { get; set; }
+
     }
 }
