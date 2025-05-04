@@ -9,11 +9,12 @@ namespace AppTests;
 public class TestStudentServiñe
 {
     private readonly IStudentRepository _studentRepository;
-    
+    private readonly IStudentService _studentService;
 
-    public TestStudentServiñe(IStudentRepository? studentRepository = null) 
+    public TestStudentServiñe(IStudentRepository? studentRepository = null, IStudentService? studentService = null) 
     {
         _studentRepository = studentRepository ?? new Mock<IStudentRepository>().Object;
+        _studentService = studentService ?? new Mock<IStudentService>().Object; 
     }
     public async Task<IEnumerable<Student>> GetAllStudTest()
     {
@@ -24,9 +25,14 @@ public class TestStudentServiñe
         return await _studentRepository.GetByIdStudentRepositoryAsync(id, cancellationToken);
     }
 
-    public async Task<bool> AddStudentTest(Student student)
+    public async Task<bool> AddStudenRepoTest(Student student)
     {
         await _studentRepository.AddStudentRepositoryAsync(student);
+        return true;
+    }
+    public async Task<bool> AddStudenServiceTest(string Name, string FirstName, string LastName, string Email, string Phone)
+    {
+        await _studentService.AddStudentServiceAsync(Name, FirstName, LastName, Email, Phone);
         return true;
     }
 
@@ -112,10 +118,30 @@ public class TestStudentServiñe
         var service = new TestStudentServiñe(repObj.Object);
 
         //act
-        var res = await service.AddStudentTest(newStud);
+        var res = await service.AddStudenRepoTest(newStud);
         //assert
         Assert.True(res);
         //Assert.False(res);
+    }
+    [Fact]
+    public async Task AddServiceTestSuccess()
+    {
+        var servObj = new Mock<IStudentService>();
+        var newStud = new
+        {
+            Id = 234,
+            Name = "gsgdfgdfg",
+            Email = "dfgdfgdfg",
+            FirstName = "fgdfgdfgdfg",
+            LastName = "dfgdf;lsipo",
+            Phone = "fdgdfgdf"
+        };
+        servObj.Setup(s => s.AddStudentServiceAsync(newStud.Name, newStud.Email, newStud.FirstName, newStud.LastName, newStud.Phone, It.IsAny<CancellationToken>()));
+        var testService = new TestStudentServiñe();
+
+        var res = await testService.AddStudenServiceTest(newStud.Name, newStud.Email, newStud.FirstName, newStud.LastName, newStud.Phone);
+
+        Assert.True(res);
     }
 }
 
