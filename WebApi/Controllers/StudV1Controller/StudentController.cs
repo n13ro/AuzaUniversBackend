@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApi.Controllers
+namespace WebApi.Controllers.StudV1Controller
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     
     public class StudentController(IStudentService studentService) : ControllerBase
@@ -14,7 +14,7 @@ namespace WebApi.Controllers
         {
             await studentService.GetAllStudentServiceAsync(cancellationToken);
         }
-        [HttpGet("GetById")]
+        [HttpGet("GetById/{id}")]
         public async Task GetByIdAsync(int id, CancellationToken cancellationToken)
         {
             await studentService.GetByIdStudentServiceAsync(id, cancellationToken);
@@ -31,7 +31,7 @@ namespace WebApi.Controllers
         //{
         //    await studentService.UpdateAsync();
         //}
-        [HttpDelete("Delete")]
+        [HttpDelete("Delete/{id}")]
         public async Task DeleteAsync(int id, CancellationToken cancellationToken)
         {
             await studentService.DeleteStudentServiceAsync(id, cancellationToken);

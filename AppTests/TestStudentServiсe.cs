@@ -19,9 +19,15 @@ public class TestStudentServiñe
     {
         return await _studentRepository.GetAllStudentRepositoryAsync();
     }
-    public async Task<Student> GetStudByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<Student> GetStudByIdAsyncTest(int id, CancellationToken cancellationToken)
     {
         return await _studentRepository.GetByIdStudentRepositoryAsync(id, cancellationToken);
+    }
+
+    public async Task<bool> AddStudentTest(Student student)
+    {
+        await _studentRepository.AddStudentRepositoryAsync(student);
+        return true;
     }
 
     [Fact]
@@ -30,7 +36,7 @@ public class TestStudentServiñe
         //arr
         var repObj = new Mock<IStudentRepository>();
         // Íàñòğîéòå çàãëóøêó äëÿ âîçâğàòà ñïèñêà ñ ıëåìåíòàìè
-        var students = new HashSet<Student>
+        var students = new List<Student>
         {
             new Student 
             { 
@@ -74,15 +80,42 @@ public class TestStudentServiñe
         var service = new TestStudentServiñe(repObj.Object);
 
         //act
-        var result = await service.GetStudByIdAsync(1, CancellationToken.None);
-        
+        var result = await service.GetStudByIdAsyncTest(1, CancellationToken.None);
+
         //assert
-        Assert.NotNull(result);
-        Assert.Equal(oneStud.Id, result.Id);
-        Assert.Equal(oneStud.Name, result.Name);
-        Assert.Equal(oneStud.FirstName, result.FirstName);
+        Assert.Multiple(() =>
+        {
+            Assert.NotNull(result);
+            Assert.Equal(oneStud.Id, result.Id);
+            Assert.Equal(oneStud.Name, result.Name);
+            Assert.Equal(oneStud.FirstName, result.FirstName);
+        });
 
+        
     }
+    [Fact]
+    public async Task AddStudentSuccessTest()
+    {
+        //arr
+        var repObj = new Mock<IStudentRepository>();
 
+        var newStud = new Student
+        {
+            Id = 1,
+            Name = "Danil",
+            Email = "fsdfs",
+            FirstName = "dfsf",
+            LastName = "Danil"
+        };
+
+        repObj.Setup(o => o.AddStudentRepositoryAsync(newStud, It.IsAny<CancellationToken>()));
+        var service = new TestStudentServiñe(repObj.Object);
+
+        //act
+        var res = await service.AddStudentTest(newStud);
+        //assert
+        Assert.True(res);
+        //Assert.False(res);
+    }
 }
 

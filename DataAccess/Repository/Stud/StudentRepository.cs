@@ -19,7 +19,7 @@ namespace DataAccess.Repository.Stud
 
         public async Task DeleteStudentRepositoryAsync(int id, CancellationToken cancellationToken = default)
         {
-           var OneStud =  await ctx.Students.FirstAsync(c => c.Id == id, cancellationToken);
+           var OneStud =  await ctx.Students.FirstAsync(ctx => ctx.Id == id, cancellationToken);
            ctx.Students.Remove(OneStud);
            await ctx.SaveChangesAsync(cancellationToken);
         }
@@ -32,7 +32,7 @@ namespace DataAccess.Repository.Stud
 
         public async Task<Student> GetByIdStudentRepositoryAsync(int id, CancellationToken cancellationToken = default)
         {
-            var oneStud = await ctx.Students.FirstAsync(c=>c.Id == id, cancellationToken);
+            var oneStud = await ctx.Students.FirstAsync(ctx=>ctx.Id == id, cancellationToken);
             return oneStud;
         }
 
