@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repository.Stud
 {
-    internal class StudentRepository(AppDbContext ctx) : IStudentRepository
+    public class StudentRepository(AppDbContext ctx) : IStudentRepository
     {
 
         public async Task AddStudentRepositoryAsync(Student student, CancellationToken cancellationToken = default)

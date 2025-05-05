@@ -11,7 +11,9 @@ namespace BusinessLogic.Services.Stud
     {
         Task<IEnumerable<Student>> GetAllStudentServiceAsync(CancellationToken cancellationToken = default);
         Task GetByIdStudentServiceAsync(int id,CancellationToken cancellationToken = default);
-        Task AddStudentServiceAsync(string Name,string FirstName, string LastName, string Email,string Phone, CancellationToken cancellationToken = default);
+
+        //Task AddStudentServiceAsync(string Name, string FirstName, string LastName, string Email, string Phone, CancellationToken cancellationToken = default);
+        Task<Student> AddStudentServiceAsync(string Name,string FirstName, string LastName, string Email,string Phone, CancellationToken cancellationToken = default);
 
         Task UpdateStudentServiceAsync(Student student, CancellationToken cancellationToken = default);
 

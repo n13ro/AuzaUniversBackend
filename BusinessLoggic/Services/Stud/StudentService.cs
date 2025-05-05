@@ -3,9 +3,9 @@ using DataAccess.Repository.Stud;
 
 namespace BusinessLogic.Services.Stud
 {
-    internal class StudentService(IStudentRepository studentRepository) : IStudentService
+    public class StudentService(IStudentRepository studentRepository) : IStudentService
     {
-        public async Task AddStudentServiceAsync(string Name, string FirstName, string LastName, string Email, string Phone, CancellationToken cancellationToken = default)
+        public async Task<Student> AddStudentServiceAsync(string Name, string FirstName, string LastName, string Email, string Phone, CancellationToken cancellationToken = default)
         {
             var newStudent = new Student
             {
@@ -17,6 +17,7 @@ namespace BusinessLogic.Services.Stud
             };
 
             await studentRepository.AddStudentRepositoryAsync(newStudent, cancellationToken);
+            return newStudent;
         }
 
         public async Task DeleteStudentServiceAsync(int id, CancellationToken cancellationToken = default)
