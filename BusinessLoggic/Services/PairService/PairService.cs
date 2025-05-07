@@ -10,24 +10,30 @@ namespace BusinessLogic.Services.PairService
 {
     internal class PairService(IPairRepository pairRepository) : IPairService
     {
-        public Task AddPairServiceAsync(string Name, CancellationToken cancellationToken = default)
+        public async Task AddPairServiceAsync(string Name, DateTime DateTime, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var newPair = new Pair 
+            {
+                Name = Name,
+                DateTime = DateTime,
+            };
+            await pairRepository.AddPairRepositoryAsync(newPair, cancellationToken);
         }
 
-        public Task DeletePairServiceAsync(int id, CancellationToken cancellationToken = default)
+        public async Task DeletePairServiceAsync(int id, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            await pairRepository.DeletePairRepositoryAsync(id, cancellationToken);
         }
 
-        public Task<IEnumerable<Pair>> GetAllPairServiceAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Pair>> GetAllPairServiceAsync(CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var pairs = await pairRepository.GetAllPairRepositoryAsync(cancellationToken);
+            return pairs;
         }
 
-        public Task GetByIdPairServiceAsync(int id, CancellationToken cancellationToken = default)
+        public async Task GetByIdPairServiceAsync(int id, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            await pairRepository.GetByIdPairRepositoryAsync(id, cancellationToken);
         }
 
         public Task UpdatePairServiceAsync(Pair pair, CancellationToken cancellationToken = default)

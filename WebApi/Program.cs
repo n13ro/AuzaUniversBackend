@@ -1,9 +1,10 @@
 using BusinessLogic;
+using BusinessLogic.Middleware;
 using DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add castom services to the container.
 builder.Services.AddDataAccess();
 builder.Services.AddBusinessLogic();
 
@@ -23,6 +24,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 
 }
+
+//Castom middleware
+app.UseExceptionHandling();
+
+
+//-----
+
 
 app.UseHttpsRedirection();
 

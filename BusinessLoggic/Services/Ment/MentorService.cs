@@ -10,29 +10,40 @@ namespace BusinessLogic.Services.Ment
 {
     internal class MentorService(IMentorRepository mentorRepository) : IMentorService
     {
-        public Task AddMentorServiceAsync(string Name, string FirstName, string LastName, string Email, string Phone, CancellationToken cancellationToken = default)
+        public async Task AddMentorServiceAsync(string Name, string FirstName, string LastName, string Email, string Phone, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var newMentor = new Mentor 
+            {
+                Name = Name,
+                FirstName = FirstName,
+                LastName = LastName,
+                Email = Email,
+                Phone = Phone,
+            };
+            await mentorRepository.AddMentorRepositoryAsync(newMentor, cancellationToken);
+            //return 
         }
 
-        public Task DeleteMentorServiceAsync(int id, CancellationToken cancellationToken = default)
+        public async Task DeleteMentorServiceAsync(int id, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            await mentorRepository.DeleteMentorRepositoryAsync(id, cancellationToken);
         }
 
-        public Task<IEnumerable<Student>> GetAllMentorServiceAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Mentor>> GetAllMentorServiceAsync(CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var mentors = await mentorRepository.GetAllMentorRepositoryAsync(cancellationToken);
+            return mentors;
         }
 
-        public Task GetByIdMentorServiceAsync(int id, CancellationToken cancellationToken = default)
+        public async Task GetByIdMentorServiceAsync(int id, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            await mentorRepository.GetByIdMentorRepositoryAsync(id, cancellationToken);
         }
 
         public Task UpdateMentorServiceAsync(Mentor mentor, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
+
     }
 }

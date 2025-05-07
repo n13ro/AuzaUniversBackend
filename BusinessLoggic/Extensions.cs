@@ -14,8 +14,8 @@ namespace BusinessLogic
         {
 
             services.AddScoped<IStudentService, StudentService>();
-
             return services;
         }
+        
     }
 }

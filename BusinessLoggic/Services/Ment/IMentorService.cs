@@ -9,7 +9,7 @@ namespace BusinessLogic.Services.Ment
 {
     public interface IMentorService
     {
-        Task<IEnumerable<Student>> GetAllMentorServiceAsync(CancellationToken cancellationToken = default);
+        Task<IEnumerable<Mentor>> GetAllMentorServiceAsync(CancellationToken cancellationToken = default);
         Task GetByIdMentorServiceAsync(int id, CancellationToken cancellationToken = default);
         Task AddMentorServiceAsync(string Name, string FirstName, string LastName, string Email, string Phone, CancellationToken cancellationToken = default);
 

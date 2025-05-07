@@ -7,7 +7,7 @@ namespace BusinessLogic.Services.PairService
     {
         Task<IEnumerable<Pair>> GetAllPairServiceAsync(CancellationToken cancellationToken = default);
         Task GetByIdPairServiceAsync(int id, CancellationToken cancellationToken = default);
-        Task AddPairServiceAsync(string Name, CancellationToken cancellationToken = default);
+        Task AddPairServiceAsync(string Name, DateTime DateTime, CancellationToken cancellationToken = default);
 
         Task UpdatePairServiceAsync(Pair pair, CancellationToken cancellationToken = default);
 
