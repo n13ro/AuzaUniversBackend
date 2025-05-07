@@ -19,9 +19,9 @@ namespace DataAccess.Repository.Stud
 
         public async Task DeleteStudentRepositoryAsync(int id, CancellationToken cancellationToken = default)
         {
-           var OneStud =  await ctx.Students.FirstAsync(ctx => ctx.Id == id, cancellationToken);
-           ctx.Students.Remove(OneStud);
-           await ctx.SaveChangesAsync(cancellationToken);
+           //var OneStud =  await ctx.Students.FirstAsync(ctx => ctx.Id == id, cancellationToken);
+           await ctx.Students.Where(s => s.Id == id).ExecuteDeleteAsync(cancellationToken);
+           //await ctx.SaveChangesAsync(cancellationToken);
         }
 
         public async Task<IEnumerable<Student>> GetAllStudentRepositoryAsync(CancellationToken cancellationToken = default)
@@ -32,13 +32,21 @@ namespace DataAccess.Repository.Stud
 
         public async Task<Student> GetByIdStudentRepositoryAsync(int id, CancellationToken cancellationToken = default)
         {
-            var oneStud = await ctx.Students.FirstAsync(ctx=>ctx.Id == id, cancellationToken);
+            var oneStud = await ctx.Students.AsNoTracking().FirstAsync(ctx=>ctx.Id == id, cancellationToken);
             return oneStud;
         }
 
-        public Task UpdateStudentRepositoryAsync(Student student, CancellationToken cancellationToken = default)
+        public async Task UpdateStudentRepositoryAsync(Student student, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            await ctx.Students
+                .Where(k => k.Id == student.Id)
+                .ExecuteUpdateAsync(s =>s
+                    .SetProperty(c => c.LastName, student.LastName)
+                    .SetProperty(c => c.FirstName, student.FirstName)
+                    
+                    , cancellationToken
+                );
+
         }
     }
 }
