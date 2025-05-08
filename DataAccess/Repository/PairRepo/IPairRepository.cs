@@ -1,4 +1,5 @@
-﻿using DataAccess.Entites;
+﻿using DataAccess.DTOs.DTOPair;
+using DataAccess.Entites;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,9 @@ namespace DataAccess.Repository.PairRepo
     public interface IPairRepository
     {
         Task<IEnumerable<Pair>> GetAllPairRepositoryAsync(CancellationToken cancellationToken = default);
-        Task<Pair> GetByIdPairRepositoryAsync(int id, CancellationToken cancellationToken = default);
-        Task AddPairRepositoryAsync(Pair student, CancellationToken cancellationToken = default);
-        Task UpdatePairRepositoryAsync(Pair student, CancellationToken cancellationToken = default);
+        Task GetByIdPairRepositoryAsync(int id, CancellationToken cancellationToken = default);
+        Task AddPairRepositoryAsync(DTOPairRepository pair, CancellationToken cancellationToken = default);
+        Task UpdatePairRepositoryAsync(DTOPairRepository pair, CancellationToken cancellationToken = default);
         Task DeletePairRepositoryAsync(int id, CancellationToken cancellationToken = default);
     }
 }

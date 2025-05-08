@@ -1,4 +1,5 @@
-﻿using DataAccess.Entites;
+﻿using DataAccess.DTOs.DTOPair;
+using DataAccess.Entites;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace DataAccess.Repository.PairRepo
 {
     public class PairRepository(AppDbContext ctx) : IPairRepository
     {
-        public async Task AddPairRepositoryAsync(Pair pair, CancellationToken cancellationToken = default)
+        public async Task AddPairRepositoryAsync(DTOPairRepository pair, CancellationToken cancellationToken = default)
         {
             await ctx.Pairs.AddAsync(pair, cancellationToken);
             await ctx.SaveChangesAsync(cancellationToken);
@@ -18,9 +19,7 @@ namespace DataAccess.Repository.PairRepo
 
         public async Task DeletePairRepositoryAsync(int id, CancellationToken cancellationToken = default)
         {
-            //var onePair = await ctx.Pairs.FirstAsync(pair => pair.Id == id, cancellationToken);
             await ctx.Pairs.Where(s => s.Id == id).ExecuteDeleteAsync(cancellationToken);
-            //await ctx.SaveChangesAsync(cancellationToken);
         }
 
         public async Task<IEnumerable<Pair>> GetAllPairRepositoryAsync(CancellationToken cancellationToken = default)
@@ -28,16 +27,17 @@ namespace DataAccess.Repository.PairRepo
             return await ctx.Pairs.AsNoTracking().ToListAsync(cancellationToken);
         }
 
-        public async Task<Pair> GetByIdPairRepositoryAsync(int id, CancellationToken cancellationToken = default)
-        {
-            var onePair = await ctx.Pairs.AsNoTracking().FirstAsync(pair => pair.Id == id, cancellationToken);
-            return onePair;
+        public async Task GetByIdPairRepositoryAsync(int id, CancellationToken cancellationToken = default)
+        { 
+            await ctx.Pairs.AsNoTracking().FirstAsync(pair => pair.Id == id, cancellationToken);
         }
 
-        public async Task UpdatePairRepositoryAsync(Pair pair, CancellationToken cancellationToken = default)
+        public async Task UpdatePairRepositoryAsync(DTOPairRepository pair, CancellationToken cancellationToken = default)
         {
             await ctx.Pairs.Where(k => k.Id == pair.Id)
                 .ExecuteUpdateAsync(s => s
+                    .SetProperty(c => c.Name, pair.Name)
+                    .SetProperty(c => c.DateTime, pair.DateTime)
                     .SetProperty(c => c.Auditorium, pair.Auditorium)
                     , cancellationToken);
         }

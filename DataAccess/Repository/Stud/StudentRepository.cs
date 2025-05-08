@@ -1,4 +1,6 @@
-﻿using DataAccess.Entites;
+﻿using DataAccess.DAOs.Stud;
+using DataAccess.DTOs.Stud;
+using DataAccess.Entites;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,7 +13,7 @@ namespace DataAccess.Repository.Stud
     public class StudentRepository(AppDbContext ctx) : IStudentRepository
     {
 
-        public async Task AddStudentRepositoryAsync(Student student, CancellationToken cancellationToken = default)
+        public async Task AddStudentRepositoryAsync(DTOStudentRepository student, CancellationToken cancellationToken = default)
         {
             await ctx.Students.AddAsync(student, cancellationToken);
             await ctx.SaveChangesAsync(cancellationToken);
@@ -19,31 +21,32 @@ namespace DataAccess.Repository.Stud
 
         public async Task DeleteStudentRepositoryAsync(int id, CancellationToken cancellationToken = default)
         {
-           //var OneStud =  await ctx.Students.FirstAsync(ctx => ctx.Id == id, cancellationToken);
-           await ctx.Students.Where(s => s.Id == id).ExecuteDeleteAsync(cancellationToken);
-           //await ctx.SaveChangesAsync(cancellationToken);
+           await ctx.Students.Where(s => s.Id == id)
+                .ExecuteDeleteAsync(cancellationToken);
         }
 
         public async Task<IEnumerable<Student>> GetAllStudentRepositoryAsync(CancellationToken cancellationToken = default)
         {
-            return await ctx.Students.AsNoTracking().ToListAsync(cancellationToken);
+            return await ctx.Students.AsNoTracking()
+                .ToListAsync(cancellationToken);
         
         }
 
-        public async Task<Student> GetByIdStudentRepositoryAsync(int id, CancellationToken cancellationToken = default)
+        public async Task GetByIdStudentRepositoryAsync(int id, CancellationToken cancellationToken = default)
         {
-            var oneStud = await ctx.Students.AsNoTracking().FirstAsync(ctx=>ctx.Id == id, cancellationToken);
-            return oneStud;
+            await ctx.Students.AsNoTracking()
+                .FirstAsync(ctx => ctx.Id == id, cancellationToken);
         }
 
-        public async Task UpdateStudentRepositoryAsync(Student student, CancellationToken cancellationToken = default)
+        public async Task UpdateStudentRepositoryAsync(DTOStudentRepository student, CancellationToken cancellationToken = default)
         {
             await ctx.Students
                 .Where(k => k.Id == student.Id)
                 .ExecuteUpdateAsync(s =>s
                     .SetProperty(c => c.LastName, student.LastName)
                     .SetProperty(c => c.FirstName, student.FirstName)
-                    
+                    .SetProperty(c => c.Email, student.Email)
+                    .SetProperty(c => c.Phone, student.Phone)
                     , cancellationToken
                 );
 

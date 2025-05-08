@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <Folder Include="Intefaces\" />
-    <Folder Include="DTOs\" />
     <Folder Include="Middleware\" />
   </ItemGroup>
 
