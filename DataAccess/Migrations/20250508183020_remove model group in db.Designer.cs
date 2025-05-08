@@ -3,6 +3,7 @@ using System;
 using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250508183020_remove model group in db")]
+    partial class removemodelgroupindb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,23 @@ namespace DataAccess.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("DataAccess.Entites.Group", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Group");
+                });
 
             modelBuilder.Entity("DataAccess.Entites.Mentor", b =>
                 {
@@ -52,7 +72,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Id")
+                    b.HasIndex("Email")
                         .IsUnique();
 
                     b.ToTable("Mentors");
@@ -72,16 +92,20 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int?>("GroupId")
+                        .HasColumnType("integer");
+
                     b.Property<int?>("MentorId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Id");
+                    b.HasIndex("DateTime");
+
+                    b.HasIndex("GroupId");
 
                     b.HasIndex("MentorId");
 
@@ -108,6 +132,9 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int?>("MyGroupId")
+                        .HasColumnType("integer");
+
                     b.Property<int?>("MyPairId")
                         .HasColumnType("integer");
 
@@ -121,30 +148,81 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Id")
+                    b.HasIndex("Email")
                         .IsUnique();
+
+                    b.HasIndex("MyGroupId");
 
                     b.HasIndex("MyPairId");
 
                     b.ToTable("Students");
                 });
 
+            modelBuilder.Entity("GroupMentor", b =>
+                {
+                    b.Property<int>("GroupsId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("MentorsId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("GroupsId", "MentorsId");
+
+                    b.HasIndex("MentorsId");
+
+                    b.ToTable("GroupMentor");
+                });
+
             modelBuilder.Entity("DataAccess.Entites.Pair", b =>
                 {
+                    b.HasOne("DataAccess.Entites.Group", "GroupPair")
+                        .WithMany("Pairs")
+                        .HasForeignKey("GroupId");
+
                     b.HasOne("DataAccess.Entites.Mentor", "Mentor")
                         .WithMany("Pairs")
                         .HasForeignKey("MentorId");
+
+                    b.Navigation("GroupPair");
 
                     b.Navigation("Mentor");
                 });
 
             modelBuilder.Entity("DataAccess.Entites.Student", b =>
                 {
+                    b.HasOne("DataAccess.Entites.Group", "MyGroup")
+                        .WithMany("StudentsGroup")
+                        .HasForeignKey("MyGroupId");
+
                     b.HasOne("DataAccess.Entites.Pair", "MyPair")
                         .WithMany("Students")
                         .HasForeignKey("MyPairId");
 
+                    b.Navigation("MyGroup");
+
                     b.Navigation("MyPair");
+                });
+
+            modelBuilder.Entity("GroupMentor", b =>
+                {
+                    b.HasOne("DataAccess.Entites.Group", null)
+                        .WithMany()
+                        .HasForeignKey("GroupsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataAccess.Entites.Mentor", null)
+                        .WithMany()
+                        .HasForeignKey("MentorsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DataAccess.Entites.Group", b =>
+                {
+                    b.Navigation("Pairs");
+
+                    b.Navigation("StudentsGroup");
                 });
 
             modelBuilder.Entity("DataAccess.Entites.Mentor", b =>

@@ -11,7 +11,7 @@ namespace DataAccess.Repository.Ment
     public interface IMentorRepository
     {
         Task<IEnumerable<Mentor>> GetAllMentorRepositoryAsync(CancellationToken cancellationToken = default);
-        Task GetByIdMentorRepositoryAsync(int id, CancellationToken cancellationToken = default);
+        Task<Mentor> GetByIdMentorRepositoryAsync(int id, CancellationToken cancellationToken = default);
         Task AddMentorRepositoryAsync(DTOMentorRepository mentor, CancellationToken cancellationToken = default);
         Task UpdateMentorRepositoryAsync(DTOMentorRepository mentor,CancellationToken cancellationToken = default);
         Task DeleteMentorRepositoryAsync(int id, CancellationToken cancellationToken = default);

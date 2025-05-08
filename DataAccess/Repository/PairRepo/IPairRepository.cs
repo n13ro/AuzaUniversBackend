@@ -11,7 +11,7 @@ namespace DataAccess.Repository.PairRepo
     public interface IPairRepository
     {
         Task<IEnumerable<Pair>> GetAllPairRepositoryAsync(CancellationToken cancellationToken = default);
-        Task GetByIdPairRepositoryAsync(int id, CancellationToken cancellationToken = default);
+        Task<Pair> GetByIdPairRepositoryAsync(int id, CancellationToken cancellationToken = default);
         Task AddPairRepositoryAsync(DTOPairRepository pair, CancellationToken cancellationToken = default);
         Task UpdatePairRepositoryAsync(DTOPairRepository pair, CancellationToken cancellationToken = default);
         Task DeletePairRepositoryAsync(int id, CancellationToken cancellationToken = default);

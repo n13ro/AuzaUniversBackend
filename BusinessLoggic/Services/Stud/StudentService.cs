@@ -1,44 +1,100 @@
-﻿using DataAccess.Entites;
+﻿using BusinessLogic.DTOs.Stud;
+using DataAccess.DTOs.Stud;
+using DataAccess.Entites;
 using DataAccess.Repository.Stud;
+using Microsoft.AspNetCore.Http;
+using Microsoft.VisualBasic;
 
 namespace BusinessLogic.Services.Stud
 {
     public class StudentService(IStudentRepository studentRepository) : IStudentService
     {
-        public async Task<Student> AddStudentServiceAsync(string Name, string FirstName, string LastName, string Email, string Phone, CancellationToken cancellationToken = default)
+        public async Task AddStudentServiceAsync(DTOStudentService newStudentDto, CancellationToken cancellationToken = default)
         {
-            var newStudent = new Student
+            try 
             {
-                Name = Name,
-                FirstName = FirstName,
-                LastName = LastName,
-                Email = Email,
-                Phone = Phone,
-            };
+                if (newStudentDto == null)
+                {
+                    throw new Exception("Error args student");
+                }
+                var newStudent = new DTOStudentRepository
+                {
+                    Name = newStudentDto.Name,
+                    FirstName = newStudentDto.FirstName,
+                    LastName = newStudentDto.LastName,
+                    Email = newStudentDto.Email,
+                    Phone = newStudentDto.Phone,
+                };
 
-            await studentRepository.AddStudentRepositoryAsync(newStudent, cancellationToken);
-            return newStudent;
+                await studentRepository.AddStudentRepositoryAsync(newStudent, cancellationToken);
+
+            }
+            catch(Exception ex) 
+            {
+                throw new Exception($"Error add stud service {ex.Message}");
+            }
+            
         }
 
         public async Task DeleteStudentServiceAsync(int id, CancellationToken cancellationToken = default)
         {
-            await studentRepository.DeleteStudentRepositoryAsync(id, cancellationToken);
+            try
+            {
+                await studentRepository.DeleteStudentRepositoryAsync(id, cancellationToken);
+            }
+            catch (Exception ex) 
+            {
+                throw new Exception($"Err del stud service {ex.Message}");
+            }
+
         }
 
         public async Task<IEnumerable<Student>> GetAllStudentServiceAsync(CancellationToken cancellationToken = default)
         {
-            var students = await studentRepository.GetAllStudentRepositoryAsync(cancellationToken);
-            return students;
+            try
+            {
+                var allStud = await studentRepository.GetAllStudentRepositoryAsync(cancellationToken);
+                return allStud;
+            }
+            catch (Exception ex) 
+            {
+                throw new Exception($"Err getAll stud service {ex.Message}");
+            }
+            
         }
 
-        public async Task GetByIdStudentServiceAsync(int id, CancellationToken cancellationToken = default)
+        public async Task<Student> GetByIdStudentServiceAsync(int id, CancellationToken cancellationToken = default)
         {
-            await studentRepository.GetByIdStudentRepositoryAsync(id, cancellationToken);
+            try
+            {
+                return await studentRepository.GetByIdStudentRepositoryAsync(id, cancellationToken); ;
+            } 
+            catch (Exception ex)
+            {
+                throw new Exception($"Err getById stud service {ex.Message}");
+            }
         }
 
-        public Task UpdateStudentServiceAsync(Student student, CancellationToken cancellationToken = default)
+        public async Task UpdateStudentServiceAsync(DTOStudentService newUpdatetDto, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var newUpdate = new DTOStudentRepository
+                {
+                    Id = newUpdatetDto.Id,
+                    Name = newUpdatetDto.Name,
+                    FirstName = newUpdatetDto.FirstName,
+                    LastName = newUpdatetDto.LastName,
+                    Email = newUpdatetDto.Email,
+                    Phone = newUpdatetDto.Phone,
+                };
+
+                await studentRepository.UpdateStudentRepositoryAsync(newUpdate, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Err update stud service {ex.Message}");
+            }
         }
     }
 }

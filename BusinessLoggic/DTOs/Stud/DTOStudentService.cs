@@ -1,13 +1,12 @@
-﻿using DataAccess.Entites;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.DAOs.Stud
+namespace BusinessLogic.DTOs.Stud
 {
-    public class DAOStudentRepository
+    public class DTOStudentService
     {
         public int Id { get; set; }
         public string Name { get; set; }

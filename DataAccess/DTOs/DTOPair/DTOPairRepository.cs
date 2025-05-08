@@ -1,18 +1,24 @@
 ﻿using DataAccess.Entites;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccess.DTOs.DTOPair
 {
-    public class DTOPairRepository : Pair
+    public class DTOPairRepository
     {
-        public string? Name { get; set; }
+        public int Id { get; set; }
 
-        public DateTime DateTime { get; set; }
+        [Required]
+        public required string Name { get; set; }
 
-        public int Auditorium { get; set; }
+        [Required]
+        public required DateTime DateTime { get; set; }
+
+        [Required]
+        public required int Auditorium { get; set; }
     }
 }

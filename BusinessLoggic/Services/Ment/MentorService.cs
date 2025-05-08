@@ -1,4 +1,6 @@
-﻿using DataAccess.Entites;
+﻿using BusinessLogic.DTOs.Ment;
+using DataAccess.DTOs.Ment;
+using DataAccess.Entites;
 using DataAccess.Repository.Ment;
 using System;
 using System.Collections.Generic;
@@ -10,39 +12,84 @@ namespace BusinessLogic.Services.Ment
 {
     internal class MentorService(IMentorRepository mentorRepository) : IMentorService
     {
-        public async Task AddMentorServiceAsync(string Name, string FirstName, string LastName, string Email, string Phone, CancellationToken cancellationToken = default)
+        public async Task AddMentorServiceAsync(DTOMentorService newMentorDto, CancellationToken cancellationToken = default)
         {
-            var newMentor = new Mentor 
+            try
             {
-                Name = Name,
-                FirstName = FirstName,
-                LastName = LastName,
-                Email = Email,
-                Phone = Phone,
-            };
-            await mentorRepository.AddMentorRepositoryAsync(newMentor, cancellationToken);
-            //return 
+                var newMentor = new DTOMentorRepository 
+                {
+                    Name = newMentorDto.Name,
+                    FirstName = newMentorDto.FirstName,
+                    LastName = newMentorDto.LastName,
+                    Email = newMentorDto.Email,
+                    Phone = newMentorDto.Phone,
+                };
+                await mentorRepository.AddMentorRepositoryAsync(newMentor, cancellationToken);
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error add ment service {ex.Message}");
+            }
         }
 
         public async Task DeleteMentorServiceAsync(int id, CancellationToken cancellationToken = default)
         {
-            await mentorRepository.DeleteMentorRepositoryAsync(id, cancellationToken);
+            try
+            {
+                await mentorRepository.DeleteMentorRepositoryAsync(id, cancellationToken);
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error del ment service {ex.Message}");
+            }
         }
 
         public async Task<IEnumerable<Mentor>> GetAllMentorServiceAsync(CancellationToken cancellationToken = default)
         {
-            var mentors = await mentorRepository.GetAllMentorRepositoryAsync(cancellationToken);
-            return mentors;
+            try
+            {
+                return await mentorRepository.GetAllMentorRepositoryAsync(cancellationToken);
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error getAll ment service {ex.Message}");
+            }
         }
 
-        public async Task GetByIdMentorServiceAsync(int id, CancellationToken cancellationToken = default)
+        public async Task<Mentor> GetByIdMentorServiceAsync(int id, CancellationToken cancellationToken = default)
         {
-            await mentorRepository.GetByIdMentorRepositoryAsync(id, cancellationToken);
+            try
+            {
+                return await mentorRepository.GetByIdMentorRepositoryAsync(id, cancellationToken);
+            }
+            catch(Exception ex)
+            {
+                throw new Exception($"Error getById ment service {ex.Message}");
+            }
         }
 
-        public Task UpdateMentorServiceAsync(Mentor mentor, CancellationToken cancellationToken = default)
+        public async Task UpdateMentorServiceAsync(DTOMentorService newMentorDto, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var newMentor = new DTOMentorRepository
+                {
+                    Name = newMentorDto.Name,
+                    FirstName = newMentorDto.FirstName,
+                    LastName = newMentorDto.LastName,
+                    Email = newMentorDto.Email,
+                    Phone = newMentorDto.Phone,
+                };
+                await mentorRepository.UpdateMentorRepositoryAsync(newMentor, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error update ment service {ex.Message}");
+            }
+
         }
 
     }

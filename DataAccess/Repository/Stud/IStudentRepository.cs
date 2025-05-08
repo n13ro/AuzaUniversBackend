@@ -12,7 +12,7 @@ namespace DataAccess.Repository.Stud
     public interface IStudentRepository
     {
         Task<IEnumerable<Student>> GetAllStudentRepositoryAsync(CancellationToken cancellationToken = default);
-        Task GetByIdStudentRepositoryAsync(int id, CancellationToken cancellationToken = default);
+        Task<Student> GetByIdStudentRepositoryAsync(int id, CancellationToken cancellationToken = default);
         Task AddStudentRepositoryAsync(DTOStudentRepository student, CancellationToken cancellationToken = default);
         Task UpdateStudentRepositoryAsync(DTOStudentRepository student, CancellationToken cancellationToken = default);
         Task DeleteStudentRepositoryAsync(int id, CancellationToken cancellationToken = default);

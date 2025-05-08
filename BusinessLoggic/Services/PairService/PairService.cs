@@ -1,44 +1,92 @@
-﻿using DataAccess.Entites;
+﻿using BusinessLogic.DTOs.DTOPair;
+using DataAccess.DTOs.DTOPair;
+using DataAccess.Entites;
 using DataAccess.Repository.PairRepo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace BusinessLogic.Services.PairService
 {
     internal class PairService(IPairRepository pairRepository) : IPairService
     {
-        public async Task AddPairServiceAsync(string Name, DateTime DateTime, CancellationToken cancellationToken = default)
+        public async Task AddPairServiceAsync(DTOPairService newPairDto, CancellationToken cancellationToken = default)
         {
-            var newPair = new Pair 
+            try
             {
-                Name = Name,
-                DateTime = DateTime,
-            };
-            await pairRepository.AddPairRepositoryAsync(newPair, cancellationToken);
+                var newPair = new DTOPairRepository 
+                {
+                    Name = newPairDto.Name,
+                    DateTime = newPairDto.DateTime,
+                    Auditorium = newPairDto.Auditorium,
+                };
+                await pairRepository.AddPairRepositoryAsync(newPair, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Err add pair service {ex.Message}");
+            }
+            
         }
 
         public async Task DeletePairServiceAsync(int id, CancellationToken cancellationToken = default)
         {
-            await pairRepository.DeletePairRepositoryAsync(id, cancellationToken);
+            try
+            {
+                await pairRepository.DeletePairRepositoryAsync(id, cancellationToken);
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Err del pair service {ex.Message}");
+            }
         }
 
         public async Task<IEnumerable<Pair>> GetAllPairServiceAsync(CancellationToken cancellationToken = default)
         {
-            var pairs = await pairRepository.GetAllPairRepositoryAsync(cancellationToken);
-            return pairs;
+            try
+            {
+                return await pairRepository.GetAllPairRepositoryAsync(cancellationToken);
+
+            }
+            catch(Exception ex)
+            {
+                throw new Exception($"Err getAll pair service {ex.Message}");
+            }
         }
 
-        public async Task GetByIdPairServiceAsync(int id, CancellationToken cancellationToken = default)
+        public async Task<Pair> GetByIdPairServiceAsync(int id, CancellationToken cancellationToken = default)
         {
-            await pairRepository.GetByIdPairRepositoryAsync(id, cancellationToken);
+            try
+            {
+                return await pairRepository.GetByIdPairRepositoryAsync(id, cancellationToken);
+
+            }
+            catch(Exception ex)
+            {
+                throw new Exception($"Err getById pair service {ex.Message}");
+            }
         }
 
-        public Task UpdatePairServiceAsync(Pair pair, CancellationToken cancellationToken = default)
+        public async Task UpdatePairServiceAsync(DTOPairService newUpdateDto, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var newPair = new DTOPairRepository
+                {
+                    Name = newUpdateDto.Name,
+                    DateTime = newUpdateDto.DateTime,
+                    Auditorium = newUpdateDto.Auditorium,
+                };
+                await pairRepository.UpdatePairRepositoryAsync(newPair, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Err update pair service {ex.Message}");
+            }
         }
     }
 }

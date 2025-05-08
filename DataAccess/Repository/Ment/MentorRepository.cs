@@ -14,13 +14,38 @@ namespace DataAccess.Repository.Ment
 
         public async Task AddMentorRepositoryAsync(DTOMentorRepository mentor, CancellationToken cancellationToken = default)
         {
-            await ctx.Mentors.AddAsync(mentor, cancellationToken);
-            await ctx.SaveChangesAsync(cancellationToken);
+            var newMentor = new Mentor
+            {
+                Name = mentor.Name,
+                FirstName = mentor.FirstName,
+                LastName = mentor.LastName,
+                Email = mentor.Email,
+                Phone = mentor.Phone
+            };
+            await using var transaction = await ctx.Database.BeginTransactionAsync(cancellationToken);
+            try
+            {
+                await ctx.Mentors.AddAsync(newMentor, cancellationToken);
+                await ctx.SaveChangesAsync(cancellationToken);
+                await transaction.CommitAsync(cancellationToken);
+
+            }catch (Exception ex)
+            {
+                await transaction.RollbackAsync(cancellationToken);
+            }
         }
 
         public async Task DeleteMentorRepositoryAsync(int id, CancellationToken cancellationToken = default)
         {
-            await ctx.Mentors.Where(k => k.Id == id).ExecuteDeleteAsync(cancellationToken);
+            await using var transaction = await ctx.Database.BeginTransactionAsync(cancellationToken);
+            try
+            {
+                await ctx.Mentors.Where(k => k.Id == id).ExecuteDeleteAsync(cancellationToken);
+                await transaction.CommitAsync(cancellationToken);
+            } catch (Exception ex)
+            {
+                await transaction.RollbackAsync(cancellationToken);
+            }
         }
 
         public async Task<IEnumerable<Mentor>> GetAllMentorRepositoryAsync(CancellationToken cancellationToken = default)
@@ -28,20 +53,29 @@ namespace DataAccess.Repository.Ment
             return await ctx.Mentors.AsNoTracking().ToListAsync(cancellationToken);
         }
 
-        public async Task GetByIdMentorRepositoryAsync(int id, CancellationToken cancellationToken = default)
+        public async Task<Mentor> GetByIdMentorRepositoryAsync(int id, CancellationToken cancellationToken = default)
         {
-            await ctx.Mentors.AsNoTracking().FirstAsync(ctx => ctx.Id == id, cancellationToken); ;
+            return await ctx.Mentors.AsNoTracking().FirstAsync(ctx => ctx.Id == id, cancellationToken); ;
         }
 
         public async Task UpdateMentorRepositoryAsync(DTOMentorRepository mentor, CancellationToken cancellationToken = default)
         {
-            await ctx.Mentors.Where(k => k.Id == mentor.Id)
+            await using var transaction = await ctx.Database.BeginTransactionAsync(cancellationToken);
+
+            try
+            {
+                await ctx.Mentors.Where(k => k.Id == mentor.Id)
                 .ExecuteUpdateAsync(s => s
                     .SetProperty(c => c.Name, mentor.Name)
                     .SetProperty(c => c.FirstName, mentor.FirstName)
                     .SetProperty(c => c.LastName, mentor.LastName)
                     .SetProperty(c => c.Phone, mentor.Phone)
-                    ,cancellationToken);
+                    , cancellationToken);
+                await transaction.CommitAsync(cancellationToken);
+            } catch (Exception ex)
+            {
+                await transaction.RollbackAsync(cancellationToken);
+            }
         }
     }
 }

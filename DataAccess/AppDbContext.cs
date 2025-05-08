@@ -10,7 +10,7 @@ public class AppDbContext : DbContext
     public DbSet<Student> Students { get; set; }
     public DbSet<Pair> Pairs { get; set; }
     public DbSet<Mentor> Mentors { get; set; }
-    public DbSet<Group> Groups { get; set; }
+    //public DbSet<Group> Groups { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> ctx) : base(ctx){}
 
@@ -18,10 +18,10 @@ public class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Group - Student (One-to-Many)
-        modelBuilder.Entity<Student>()
-            .HasOne(s => s.MyGroup)
-            .WithMany(g => g.StudentsGroup)
-            .HasForeignKey(ksg => ksg.MyGroupId);
+        //modelBuilder.Entity<Student>()
+        //    .HasOne(s => s.MyGroup)
+        //    .WithMany(g => g.StudentsGroup)
+        //    .HasForeignKey(ksg => ksg.MyGroupId);
 
         // Student - Pair (Many-to-Many)
         modelBuilder.Entity<Student>()
@@ -30,10 +30,10 @@ public class AppDbContext : DbContext
             .HasForeignKey(ksg => ksg.MyPairId);
 
         // Group - Pair (One-to-Many)
-        modelBuilder.Entity<Pair>()
-            .HasOne(g => g.GroupPair)
-            .WithMany(g => g.Pairs)
-            .HasForeignKey(kp => kp.GroupId);
+        //modelBuilder.Entity<Pair>()
+        //    .HasOne(g => g.GroupPair)
+        //    .WithMany(g => g.Pairs)
+        //    .HasForeignKey(kp => kp.GroupId);
 
         // Mentor - Pair (One-to-Many)
         modelBuilder.Entity<Pair>()
@@ -42,15 +42,15 @@ public class AppDbContext : DbContext
             .HasForeignKey(k => k.MentorId);
 
         // Mentor - Group (Many-to-Many)
-        modelBuilder.Entity<Group>()
-            .HasMany(g => g.Mentors)
-            .WithMany(s => s.Groups)
-            .UsingEntity(j => j.ToTable("GroupMentors"));
+        //modelBuilder.Entity<Group>()
+        //    .HasMany(g => g.Mentors)
+        //    .WithMany(s => s.Groups)
+        //    .UsingEntity(j => j.ToTable("GroupMentors"));
 
-        modelBuilder.Entity<Student>().HasIndex(s => s.Email).IsUnique();
-        modelBuilder.Entity<Mentor>().HasIndex(m => m.Email).IsUnique();
-        modelBuilder.Entity<Pair>().HasIndex(p => p.DateTime);
-        modelBuilder.Entity<Group>().HasKey(g => g.Id);
+        modelBuilder.Entity<Student>().HasIndex(s => s.Id).IsUnique();
+        modelBuilder.Entity<Mentor>().HasIndex(m => m.Id).IsUnique();
+        modelBuilder.Entity<Pair>().HasIndex(p => p.Id);
+        //modelBuilder.Entity<Group>().HasKey(g => g.Id);
     }
 
 }

@@ -13,7 +13,7 @@ public static class Extensions
     {
         services.AddScoped<IStudentRepository, StudentRepository>();
         services.AddScoped<IMentorRepository, MentorRepository>();
-        services.AddScoped<IGroupRepository, GroupRepository>();
+        //services.AddScoped<IGroupRepository, GroupRepository>();
         services.AddScoped<IPairRepository, PairRepository>();
 
         services.AddDbContext<AppDbContext>(ctx =>

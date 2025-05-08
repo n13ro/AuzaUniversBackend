@@ -1,4 +1,7 @@
-﻿using BusinessLogic.Services.Stud;
+﻿using BusinessLogic.Services.Ment;
+using BusinessLogic.Services.PairService;
+using BusinessLogic.Services.Stud;
+using DataAccess.Repository.Ment;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -14,6 +17,9 @@ namespace BusinessLogic
         {
 
             services.AddScoped<IStudentService, StudentService>();
+            services.AddScoped<IMentorService, MentorService>();
+            services.AddScoped<IPairService, PairService>();
+            
             return services;
         }
         

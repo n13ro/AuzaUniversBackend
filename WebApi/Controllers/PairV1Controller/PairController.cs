@@ -1,5 +1,7 @@
-﻿using BusinessLogic.Services.Ment;
+﻿using BusinessLogic.DTOs.DTOPair;
+using BusinessLogic.Services.Ment;
 using BusinessLogic.Services.PairService;
+using DataAccess.Entites;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,31 +12,72 @@ namespace WebApi.Controllers.PairV1Controller
     public class PairController(IPairService pairService) : ControllerBase
     {
         [HttpGet("GetAll")]
-        public async Task GetAll(CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
-            await pairService.GetAllPairServiceAsync(cancellationToken);
+
+            var pairs = await pairService.GetAllPairServiceAsync(cancellationToken);
+            return Ok(new { success = true, data = pairs });
+            
         }
         [HttpGet("GetById/{id}")]
-        public async Task GetByIdAsync(int id, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
-            await pairService.GetByIdPairServiceAsync(id, cancellationToken);
+            try
+            {
+                var onePair = await pairService.GetByIdPairServiceAsync(id, cancellationToken);
+                if (onePair == null)
+                {
+                    return NotFound(new { success = false, message = "Pair not found" });
+                }
+                return Ok(new { success = true, data = onePair });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost("Add")]
-        public async Task<IActionResult> AddAsync(string Name, CancellationToken cancellationToken)
+        public async Task<IActionResult> AddAsync(DTOPairService DTOPairService, CancellationToken cancellationToken)
         {
-            await pairService.AddPairServiceAsync(Name, cancellationToken);
-            return Ok(new { mess = "Pair is created" });
+            try
+            {
+                await pairService.AddPairServiceAsync(DTOPairService, cancellationToken);
+                return Ok(new { message = "Pair is created" });
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
-        //[HttpPut("Update")]
-        //public async Task UpdateAsync(Pair pair, CancellationToken cancellationToken)
-        //{
-        //    await pairService.UpdateAsync();
-        //}
-        [HttpDelete("Delete/{id}")]
-        public async Task DeleteAsync(int id, CancellationToken cancellationToken)
+        [HttpPut("Update")]
+        public async Task<IActionResult> UpdateAsync(DTOPairService DTOPairService, CancellationToken cancellationToken)
         {
-            await pairService.DeletePairServiceAsync(id, cancellationToken);
+            try
+            {
+                await pairService.UpdatePairServiceAsync(DTOPairService, cancellationToken);
+                return Ok(new { success = true, data = "Pair updated" });
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpDelete("Delete/{id}")]
+        public async Task<IActionResult> DeleteAsync(int id, CancellationToken cancellationToken)
+        {
+            try
+            {
+                await pairService.DeletePairServiceAsync(id, cancellationToken);
+                return Ok(new { success = true, data = "Pair deleted" });
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
