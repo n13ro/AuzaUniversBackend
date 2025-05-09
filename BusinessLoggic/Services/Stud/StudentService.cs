@@ -75,6 +75,18 @@ namespace BusinessLogic.Services.Stud
             }
         }
 
+        public async Task<IEnumerable<Student>> GetByPagePaginationServiceAsync(int page, int size, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await studentRepository.GetByPagePaginationRepositoryAsync(page, size, cancellationToken);
+            }
+            catch(Exception ex)
+            {
+                throw new Exception($"Err getByIdPagination stud service {ex.Message}");
+            }
+        }
+
         public async Task UpdateStudentServiceAsync(DTOStudentService newUpdatetDto, CancellationToken cancellationToken = default)
         {
             try

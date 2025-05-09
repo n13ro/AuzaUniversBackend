@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.DTOs.DTOPair;
 using BusinessLogic.Services.Ment;
 using BusinessLogic.Services.PairService;
+using BusinessLogic.Services.Stud;
 using DataAccess.Entites;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -78,6 +79,12 @@ namespace WebApi.Controllers.PairV1Controller
             {
                 return BadRequest(ex.Message);
             }
+        }
+        [HttpGet("GetPagination")]
+        public async Task<IActionResult> GetPagination(int page, int size, CancellationToken cancellationToken)
+        {
+            var pairs = await pairService.GetByPagePaginationServiceAsync(page, size, cancellationToken);
+            return Ok(new { success = true, data = pairs });
         }
     }
 }

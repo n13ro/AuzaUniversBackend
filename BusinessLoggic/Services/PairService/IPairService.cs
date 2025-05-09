@@ -13,5 +13,8 @@ namespace BusinessLogic.Services.PairService
         Task UpdatePairServiceAsync(DTOPairService pair, CancellationToken cancellationToken = default);
 
         Task DeletePairServiceAsync(int id, CancellationToken cancellationToken = default);
+
+        Task<IEnumerable<Pair>> GetByPagePaginationServiceAsync(int page, int size, CancellationToken cancellationToken = default);
+
     }
 }

@@ -17,5 +17,7 @@ namespace DataAccess.Repository.Stud
         Task UpdateStudentRepositoryAsync(DTOStudentRepository student, CancellationToken cancellationToken = default);
         Task DeleteStudentRepositoryAsync(int id, CancellationToken cancellationToken = default);
 
+        Task<IEnumerable<Student>> GetByPagePaginationRepositoryAsync(int page, int size, CancellationToken cancellationToken = default);
+
     }
 }

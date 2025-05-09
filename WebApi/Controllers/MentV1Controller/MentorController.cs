@@ -77,5 +77,11 @@ namespace WebApi.Controllers.MentV1Controller
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet("GetPagination")]
+        public async Task<IActionResult> GetPagination(int page, int size, CancellationToken cancellationToken)
+        {
+            var mentors = await mentorService.GetByPagePaginationServiceAsync(page, size, cancellationToken);
+            return Ok(new { success = true, data = mentors });
+        }
     }
 }

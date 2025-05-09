@@ -18,5 +18,6 @@ namespace BusinessLogic.Services.Stud
         Task UpdateStudentServiceAsync(DTOStudentService student, CancellationToken cancellationToken = default);
 
         Task DeleteStudentServiceAsync(int id, CancellationToken cancellationToken = default);
+        Task<IEnumerable<Student>> GetByPagePaginationServiceAsync(int page, int size, CancellationToken cancellationToken = default);
     }
 }

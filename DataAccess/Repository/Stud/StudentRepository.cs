@@ -55,15 +55,23 @@ namespace DataAccess.Repository.Stud
         public async Task<IEnumerable<Student>> GetAllStudentRepositoryAsync(CancellationToken cancellationToken = default)
         {
 
-            return await ctx.Students.AsNoTracking()
-                .ToListAsync(cancellationToken);
-        
+                return await ctx.Students.AsNoTracking()
+                    .ToListAsync(cancellationToken);
+
         }
 
         public async Task<Student> GetByIdStudentRepositoryAsync(int id, CancellationToken cancellationToken = default)
         {
             return await ctx.Students.AsNoTracking()
                 .FirstAsync(ctx => ctx.Id == id, cancellationToken);
+        }
+
+        public async Task<IEnumerable<Student>> GetByPagePaginationRepositoryAsync(int page, int size, CancellationToken cancellationToken = default)
+        {
+            return await ctx.Students.AsNoTracking()
+                .Skip((page - 1) * size)
+                .Take(size)
+                .ToListAsync(cancellationToken);
         }
 
         public async Task UpdateStudentRepositoryAsync(DTOStudentRepository student, CancellationToken cancellationToken = default)
@@ -86,5 +94,6 @@ namespace DataAccess.Repository.Stud
                 await transaction.RollbackAsync(cancellationToken);
             }
         }
+
     }
 }

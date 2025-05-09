@@ -15,5 +15,8 @@ namespace DataAccess.Repository.Ment
         Task AddMentorRepositoryAsync(DTOMentorRepository mentor, CancellationToken cancellationToken = default);
         Task UpdateMentorRepositoryAsync(DTOMentorRepository mentor,CancellationToken cancellationToken = default);
         Task DeleteMentorRepositoryAsync(int id, CancellationToken cancellationToken = default);
+
+        Task<IEnumerable<Mentor>> GetByPagePaginationRepositoryAsync(int page, int size, CancellationToken cancellationToken = default);
+
     }
 }

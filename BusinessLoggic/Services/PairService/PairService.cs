@@ -71,6 +71,11 @@ namespace BusinessLogic.Services.PairService
             }
         }
 
+        public async Task<IEnumerable<Pair>> GetByPagePaginationServiceAsync(int page, int size, CancellationToken cancellationToken = default)
+        {
+            return await pairRepository.GetByPagePaginationRepositoryAsync(page, size, cancellationToken);
+        }
+
         public async Task UpdatePairServiceAsync(DTOPairService newUpdateDto, CancellationToken cancellationToken = default)
         {
             try

@@ -69,5 +69,11 @@ namespace WebApi.Controllers.StudV1Controller
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet("GetPagination")]
+        public async Task<IActionResult> GetPagination(int page, int size, CancellationToken cancellationToken)
+        {
+            var students = await studentService.GetByPagePaginationServiceAsync(page, size, cancellationToken);
+            return Ok(new { success = true, data = students });
+        }
     }
 }

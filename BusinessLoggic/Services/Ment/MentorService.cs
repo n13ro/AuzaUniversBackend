@@ -71,6 +71,20 @@ namespace BusinessLogic.Services.Ment
             }
         }
 
+        public async Task<IEnumerable<Mentor>> GetByPagePaginationServiceAsync(int page, int size, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await mentorRepository.GetByPagePaginationRepositoryAsync(page, size, cancellationToken);
+
+            }
+            catch(Exception ex)
+            {
+                throw new Exception($"Err getByIdPagination ment service {ex.Message}");
+
+            }
+        }
+
         public async Task UpdateMentorServiceAsync(DTOMentorService newMentorDto, CancellationToken cancellationToken = default)
         {
             try

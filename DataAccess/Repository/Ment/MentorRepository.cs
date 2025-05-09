@@ -58,6 +58,14 @@ namespace DataAccess.Repository.Ment
             return await ctx.Mentors.AsNoTracking().FirstAsync(ctx => ctx.Id == id, cancellationToken); ;
         }
 
+        public async Task<IEnumerable<Mentor>> GetByPagePaginationRepositoryAsync(int page, int size, CancellationToken cancellationToken = default)
+        {
+            return await ctx.Mentors.AsNoTracking()
+                .Skip((page - 1) * size)
+                .Take(size)
+                .ToListAsync(cancellationToken);
+        }
+
         public async Task UpdateMentorRepositoryAsync(DTOMentorRepository mentor, CancellationToken cancellationToken = default)
         {
             await using var transaction = await ctx.Database.BeginTransactionAsync(cancellationToken);

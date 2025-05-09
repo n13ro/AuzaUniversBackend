@@ -17,5 +17,8 @@ namespace BusinessLogic.Services.Ment
         Task UpdateMentorServiceAsync(DTOMentorService mentor, CancellationToken cancellationToken = default);
 
         Task DeleteMentorServiceAsync(int id, CancellationToken cancellationToken = default);
+
+        Task<IEnumerable<Mentor>> GetByPagePaginationServiceAsync(int page, int size, CancellationToken cancellationToken = default);
+
     }
 }

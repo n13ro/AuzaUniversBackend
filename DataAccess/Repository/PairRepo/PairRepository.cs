@@ -57,6 +57,14 @@ namespace DataAccess.Repository.PairRepo
             return await ctx.Pairs.AsNoTracking().FirstAsync(pair => pair.Id == id, cancellationToken);
         }
 
+        public async Task<IEnumerable<Pair>> GetByPagePaginationRepositoryAsync(int page, int size, CancellationToken cancellationToken = default)
+        {
+            return await ctx.Pairs.AsNoTracking()
+                .Skip((page - 1) * size)
+                .Take(size)
+                .ToListAsync(cancellationToken);
+        }
+
         public async Task UpdatePairRepositoryAsync(DTOPairRepository pair, CancellationToken cancellationToken = default)
         {
             await using var transaction = await ctx.Database.BeginTransactionAsync(cancellationToken);
