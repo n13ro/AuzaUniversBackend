@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DTOs.Stud;
+using DataAccess.DTOs.Stud;
 using DataAccess.Entites;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace BusinessLogic.Services.Stud
 {
     public interface IStudentService
     {
-        Task<IEnumerable<Student>> GetAllStudentServiceAsync(CancellationToken cancellationToken = default);
+        Task<IEnumerable<DTOStudentRepository>> GetAllStudentServiceAsync(CancellationToken cancellationToken = default);
         Task<Student> GetByIdStudentServiceAsync(int id,CancellationToken cancellationToken = default);
 
         Task AddStudentServiceAsync(DTOCreateStudentService student, CancellationToken cancellationToken = default);

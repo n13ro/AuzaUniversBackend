@@ -12,15 +12,24 @@ namespace RabbitMQ.Services
 {
     public class RabbitMQService : IRabbitMQService
     {
+        private readonly Dictionary<string, string> _consumerTags = new();
         private readonly RabbitMQConnectionManager _manager;
 
         public RabbitMQService(RabbitMQConnectionManager manager)
         {
             _manager = manager;
+
         }
 
         public async Task PublishMessage(string msg, string key)
         {
+            await _manager.Channel.QueueDeclareAsync(
+                key,
+                false,
+                false,
+                false,
+                null
+                );
             var body = Encoding.UTF8.GetBytes(msg);
             await _manager.Channel.BasicPublishAsync(
                 "",
@@ -54,17 +63,27 @@ namespace RabbitMQ.Services
                     await _manager.Channel.BasicNackAsync(ea.DeliveryTag, false, true);
                 }
             };
-            await _manager.Channel.BasicConsumeAsync(
+            var tag = await _manager.Channel.BasicConsumeAsync(
                 queueName,
                 false,
                 consumer
                 );
+            _consumerTags[queueName] = tag;
 
+        }
+        public async Task Unsubscribe(string queueName)
+        {
+            if(_consumerTags.TryGetValue(queueName, out var tag)) 
+            {
+                await _manager.Channel.BasicCancelAsync(tag);   
+                _consumerTags.Remove(queueName);
+            }
         }
         public void Dispose()
         {
             _manager.Channel?.Dispose();
             _manager.Connection?.Dispose();
         }
+
     }
 }

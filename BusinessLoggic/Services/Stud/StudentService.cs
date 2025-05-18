@@ -49,7 +49,7 @@ namespace BusinessLogic.Services.Stud
 
         }
 
-        public async Task<IEnumerable<Student>> GetAllStudentServiceAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<DTOStudentRepository>> GetAllStudentServiceAsync(CancellationToken cancellationToken = default)
         {
             try
             {

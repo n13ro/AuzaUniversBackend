@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RabbitMQ.Services
 {
-    public class RabbitMQConnectionManager : IHostedService, IDisposable
+    public class RabbitMQConnectionManager : IHostedService
     {
         private readonly RabbitMQOptions _options;
         public IConnection Connection { get; private set; }
@@ -31,7 +31,7 @@ namespace RabbitMQ.Services
             };
 
             // Асинхронно создаём соединение и канал
-            Connection = await factory.CreateConnectionAsync();
+            Connection = await factory.CreateConnectionAsync(cancellationToken);
             Channel = await Connection.CreateChannelAsync();
         }
 
@@ -42,10 +42,6 @@ namespace RabbitMQ.Services
             return Task.CompletedTask;
         }
 
-        public void Dispose()
-        {
-            Channel?.Dispose();
-            Connection?.Dispose();
-        }
+
     }
 }

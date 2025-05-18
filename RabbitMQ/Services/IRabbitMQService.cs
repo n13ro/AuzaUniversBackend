@@ -10,6 +10,6 @@ namespace RabbitMQ.Services
     {
         Task PublishMessage(string msg, string key);
         Task Subscribe(string queueName, Func<string, Task> handler);
-        void Dispose();
+        Task Unsubscribe(string queueName);
     }
 }

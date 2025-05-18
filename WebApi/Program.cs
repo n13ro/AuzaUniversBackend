@@ -12,13 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDataAccess();
 builder.Services.AddBusinessLogic();
 
-builder.Services.AddRabbitMQ(options =>
-{
-    options.HostName = "localhost";
-    options.UserName = "rmuser";
-    options.Password = "rmpassword";
-    options.Port = 5672;
-});
+builder.Services.AddRabbitMQ();
+
 
 //builder.Services.AddChatSignalRLogic();
 

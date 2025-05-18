@@ -11,7 +11,7 @@ namespace DataAccess.Repository.Stud
 {
     public interface IStudentRepository
     {
-        Task<IEnumerable<Student>> GetAllStudentRepositoryAsync(CancellationToken cancellationToken = default);
+        Task<IEnumerable<DTOStudentRepository>> GetAllStudentRepositoryAsync(CancellationToken cancellationToken = default);
         Task<Student> GetByIdStudentRepositoryAsync(int id, CancellationToken cancellationToken = default);
         Task AddStudentRepositoryAsync(DTOCreateStudentRepository student, CancellationToken cancellationToken = default);
         Task UpdateStudentRepositoryAsync(DTOUpdateStudentRepository student, CancellationToken cancellationToken = default);

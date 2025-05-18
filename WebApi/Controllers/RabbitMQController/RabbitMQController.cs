@@ -21,6 +21,7 @@ namespace WebApi.Controllers.RabbitMQController
             await _rabbitMQService.PublishMessage(msg, "test-queue");
             return Ok(new { message = "Message sent successfully!" });
         }
+
         [HttpPost("subs")]
         public async Task<IActionResult> Subscribe()
         {
@@ -32,5 +33,12 @@ namespace WebApi.Controllers.RabbitMQController
             });
             return Ok(new { message = $"Subscribed to queue!" });
         }
+        [HttpPost("unsub")]
+        public async Task<IActionResult> Unsubscribe()
+        {
+            await _rabbitMQService.Unsubscribe("test-queue");
+            return Ok(new { message = $"Unsubscribed to queue!" });
+        }
+
     }
 }

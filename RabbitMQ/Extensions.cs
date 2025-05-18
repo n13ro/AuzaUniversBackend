@@ -13,24 +13,23 @@ namespace RabbitMQ
 {
     public static class Extensions
     {
-        public static IServiceCollection AddRabbitMQ(this IServiceCollection services, Action<RabbitMQOptions> configure)
+        public static IServiceCollection AddRabbitMQ(this IServiceCollection services)
         {
-            var options = new RabbitMQOptions();
-            configure(options);
+            var options = new RabbitMQOptions
+            {
+                HostName = "localhost",
+                UserName = "rmuser",
+                Password = "rmpassword",
+                Port = 5672
+            };
 
             services.AddSingleton(options);
             services.AddSingleton<RabbitMQConnectionManager>();
             services.AddHostedService(sp => sp.GetRequiredService<RabbitMQConnectionManager>());
-            services.AddScoped<IRabbitMQService, RabbitMQService>();
+
+            services.AddSingleton<IRabbitMQService, RabbitMQService>();
 
             return services;
         }
-    }
-    public class RabbitMQOptions
-    {
-        public string HostName { get; set; } = "localhost";
-        public string UserName { get; set; } = "rmuser";
-        public string Password { get; set; } = "rmpassword";
-        public int Port { get; set; } = 5672;
     }
 }

@@ -36,7 +36,7 @@ namespace AppTests.TestRepository
         {
             //arr
 
-            var allStud = _fixture.Build<Student>().Without(s => s.MyPair).CreateMany(3).ToList();
+            var allStud = _fixture.Build<DTOStudentRepository>().CreateMany(3).ToList();
             var mockRepo = _fixture.Freeze<Mock<IStudentRepository>>();
 
             mockRepo.Setup(o =>

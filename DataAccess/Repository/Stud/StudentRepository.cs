@@ -52,12 +52,21 @@ namespace DataAccess.Repository.Stud
 
         }
 
-        public async Task<IEnumerable<Student>> GetAllStudentRepositoryAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<DTOStudentRepository>> GetAllStudentRepositoryAsync(CancellationToken cancellationToken = default)
         {
 
-                return await ctx.Students.AsNoTracking()
-                    .ToListAsync(cancellationToken);
-
+            return await ctx.Students
+                .Select(s => new DTOStudentRepository {
+                        Id = s.Id,
+                        Name = s.Name,
+                        FirstName = s.FirstName,
+                        LastName = s.LastName,
+                        Email = s.Email,
+                        Phone = s.Phone
+                        }
+                    )
+                .AsNoTracking()
+                .ToListAsync(cancellationToken);
         }
 
         public async Task<Student> GetByIdStudentRepositoryAsync(int id, CancellationToken cancellationToken = default)
