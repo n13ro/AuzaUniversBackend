@@ -15,13 +15,7 @@ namespace RabbitMQ
     {
         public static IServiceCollection AddRabbitMQ(this IServiceCollection services)
         {
-            var options = new RabbitMQOptions
-            {
-                HostName = "localhost",
-                UserName = "rmuser",
-                Password = "rmpassword",
-                Port = 5672
-            };
+            var options = new RabbitMQOptions();
 
             services.AddSingleton(options);
             services.AddSingleton<RabbitMQConnectionManager>();
