@@ -1,0 +1,27 @@
+services:
+  webapi:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__Redis=redis:6379
+      - ConnectionStrings__DefaultConnection=Host=localhost;Port=5432;Database=AuzaUniversDb;Username=postgres;Password=12345
+      - RabbitMQ__HostName=localhost
+      - RabbitMQ__UserName=rmuser
+      - RabbitMQ__Password=rmpassword
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  rabbitmq:
+    environment:
+      - RABBITMQ_DEFAULT_USER=rmuser
+      - RABBITMQ_DEFAULT_PASS=rmpassword
+
+  redis:
+    command: ["redis-server", "--appendonly", "yes"]

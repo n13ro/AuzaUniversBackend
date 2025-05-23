@@ -11,9 +11,14 @@ namespace Chat
 {
     public static class Extensions
     {
-        public static IServiceCollection AddChatSignalRLogic(this IServiceCollection services)
+        public static IServiceCollection AddChatGrpcLogic(this IServiceCollection services)
         {
-            services.AddSignalR();
+            services.AddGrpc(options =>
+            {
+                options.MaxReceiveMessageSize = 16 * 1024 * 1024; // 16 МБ
+                options.MaxSendMessageSize = 16 * 1024 * 1024; // 16 МБ
+            });
+
             services.AddStackExchangeRedisCache(o =>
             {
                 var conn = "localhost:6379";

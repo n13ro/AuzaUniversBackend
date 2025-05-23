@@ -1,9 +1,10 @@
 using BusinessLogic;
 using BusinessLogic.Middleware;
 using Chat;
-using Chat.Hubs;
+using Chat.Services;
 using DataAccess;
 using RabbitMQ;
+using Redis;
 using WebApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,11 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add castom services to the container.
 builder.Services.AddDataAccess();
 builder.Services.AddBusinessLogic();
-
+//builder.Services.AddChatGrpcLogic();
+builder.Services.AddRedis();
 builder.Services.AddRabbitMQ();
 
 
-//builder.Services.AddChatSignalRLogic();
 
 
 //-----------
@@ -40,8 +41,6 @@ var app = builder.Build();
 
 app.UseCors();
 
-//app.MapHub<ChatHub>("/chat");
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -63,6 +62,8 @@ app.UseAuthorization();
 
 
 app.MapControllers();
+
+//app.MapGrpcService<ChatService>().RequireCors("AllowedHosts");
 
 app.MapSwagger();
 

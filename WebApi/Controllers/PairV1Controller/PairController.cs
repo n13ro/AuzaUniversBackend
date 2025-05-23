@@ -6,18 +6,30 @@ using DataAccess.Entites;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
+using Redis;
 
 namespace WebApi.Controllers.PairV1Controller
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class PairController(IPairService pairService) : ControllerBase
+    public class PairController : ControllerBase
     {
+        private readonly RedisCacheService _cacheService;
+        private readonly IPairService _pairService;
+
+        public PairController(IPairService pairService, RedisCacheService cacheService)
+        {
+            this._cacheService = cacheService;
+            this._pairService = pairService;
+        }
+
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
+            var pairs = await _cacheService.GetOrCreateCacheAsync("all_pairs",
+                async () => await _pairService.GetAllPairServiceAsync(cancellationToken), 
+                TimeSpan.FromMinutes(10));
 
-            var pairs = await pairService.GetAllPairServiceAsync(cancellationToken);
             return Ok(new { success = true, data = pairs });
             
         }
@@ -26,7 +38,10 @@ namespace WebApi.Controllers.PairV1Controller
         {
             try
             {
-                var onePair = await pairService.GetByIdPairServiceAsync(id, cancellationToken);
+                var onePair = await _cacheService.GetOrCreateCacheAsync($"get_by_{id}", 
+                    async () => await _pairService.GetByIdPairServiceAsync(id, cancellationToken), 
+                    TimeSpan.FromMinutes(10));
+
                 if (onePair == null)
                 {
                     return NotFound(new { success = false, message = "Pair not found" });
@@ -44,7 +59,8 @@ namespace WebApi.Controllers.PairV1Controller
         {
             try
             {
-                await pairService.AddPairServiceAsync(DTOPairService, cancellationToken);
+                await _pairService.AddPairServiceAsync(DTOPairService, cancellationToken);
+                await _cacheService.RemoveCacheAsync("all_pairs");
                 return Ok(new { message = "Pair is created" });
 
             }
@@ -58,7 +74,8 @@ namespace WebApi.Controllers.PairV1Controller
         {
             try
             {
-                await pairService.UpdatePairServiceAsync(DTOPairService, cancellationToken);
+                await _pairService.UpdatePairServiceAsync(DTOPairService, cancellationToken);
+                await _cacheService.RemoveCacheAsync("all_pairs");
                 return Ok(new { success = true, data = "Pair updated" });
 
             }
@@ -72,7 +89,8 @@ namespace WebApi.Controllers.PairV1Controller
         {
             try
             {
-                await pairService.DeletePairServiceAsync(id, cancellationToken);
+                await _pairService.DeletePairServiceAsync(id, cancellationToken);
+                await _cacheService.RemoveCacheAsync("all_pairs");
                 return Ok(new { success = true, data = "Pair deleted" });
 
             }
@@ -84,7 +102,9 @@ namespace WebApi.Controllers.PairV1Controller
         [HttpGet("GetPagination")]
         public async Task<IActionResult> GetPagination(int page, int size, CancellationToken cancellationToken)
         {
-            var pairs = await pairService.GetByPagePaginationServiceAsync(page, size, cancellationToken);
+            var pairs = await _cacheService.GetOrCreateCacheAsync($"page_{page}_size_{size}",
+                async () => await _pairService.GetByPagePaginationServiceAsync(page, size, cancellationToken), 
+                TimeSpan.FromMinutes(10));
             return Ok(new { success = true, data = pairs });
         }
 
@@ -93,7 +113,7 @@ namespace WebApi.Controllers.PairV1Controller
         {
             try
             {
-                await pairService.AssignPairToStudentServiceAsync(studentId, pairId, cancellationToken);
+                await _pairService.AssignPairToStudentServiceAsync(studentId, pairId, cancellationToken);
                 return Ok(new { success = true, message = "Pair assigned to student successfully" });
             }
             catch(Exception ex)
