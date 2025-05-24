@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.DTOs.Ment;
+using DataAccess.DTOs.Ment;
 using DataAccess.Entites;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace BusinessLogic.Services.Ment
 {
     public interface IMentorService
     {
-        Task<IEnumerable<Mentor>> GetAllMentorServiceAsync(CancellationToken cancellationToken = default);
+        Task<IEnumerable<DTOMentorRepository>> GetAllMentorServiceAsync(CancellationToken cancellationToken = default);
         Task<Mentor> GetByIdMentorServiceAsync(int id, CancellationToken cancellationToken = default);
         Task AddMentorServiceAsync(DTOCreateMentorService mentor, CancellationToken cancellationToken = default);
 

@@ -1,19 +1,10 @@
 ﻿using AutoFixture.AutoMoq;
 using AutoFixture;
-using AutoFixture.Xunit2;
-using DataAccess;
 using DataAccess.DTOs.Stud;
 using DataAccess.Entites;
 using DataAccess.Repository.Stud;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Diagnostics;
-using System.Collections.Concurrent;
-using static System.Collections.Specialized.BitVector32;
+
 
 namespace AppTests.TestRepository
 {
@@ -40,7 +31,8 @@ namespace AppTests.TestRepository
             var mockRepo = _fixture.Freeze<Mock<IStudentRepository>>();
 
             mockRepo.Setup(o =>
-                o.GetAllStudentRepositoryAsync(It.IsAny<CancellationToken>())).ReturnsAsync(allStud);
+                o.GetAllStudentRepositoryAsync(It.IsAny<CancellationToken>()))
+                .ReturnsAsync(allStud);
                 
 
             
@@ -105,6 +97,55 @@ namespace AppTests.TestRepository
                 newStud,
                 It.IsAny<CancellationToken>()),
                 Times.Once);
+        }
+
+        [Fact]
+        public async Task TestUpdateStudentRepositoryIsSuccess()
+        {
+            var mockRepo = _fixture.Freeze<Mock<IStudentRepository>>();
+            var updateStudentDto = new DTOUpdateStudentRepository
+            {
+                Id = 1,
+                Name = "Updated Name",
+                FirstName = "Updated FirstName",
+                LastName = "Updated LastName",
+                Email = "updated@email.com",
+                Phone = "0987654321"
+            };
+
+            var repository = new TestStudentRepository(mockRepo.Object);
+
+            await repository._studentRepository.UpdateStudentRepositoryAsync(updateStudentDto, CancellationToken.None);
+
+            mockRepo.Verify(o => o.UpdateStudentRepositoryAsync(
+                It.Is<DTOUpdateStudentRepository>(s =>
+                    s.Id == updateStudentDto.Id &&
+                    s.Name == updateStudentDto.Name &&
+                    s.FirstName == updateStudentDto.FirstName &&
+                    s.LastName == updateStudentDto.LastName &&
+                    s.Email == updateStudentDto.Email &&
+                    s.Phone == updateStudentDto.Phone),
+                It.IsAny<CancellationToken>()),
+                Times.Once);
+        }
+
+        [Fact]
+        public async Task TestDeleteStudentRepositoryIsSuccess()
+        {
+            var mockRepo = _fixture.Freeze<Mock<IStudentRepository>>();
+            var newStudent = _fixture.Create<DTOCreateStudentRepository>();
+
+            mockRepo.Setup(o => o.DeleteStudentRepositoryAsync(newStudent.Id, It.IsAny<CancellationToken>()));
+
+            var repository = new TestStudentRepository(mockRepo.Object);
+
+            await repository._studentRepository.DeleteStudentRepositoryAsync(newStudent.Id, CancellationToken.None);
+
+            mockRepo.Verify(o => o.DeleteStudentRepositoryAsync(
+                newStudent.Id,
+                It.IsAny<CancellationToken>()),
+                Times.Once
+                );
         }
     }
 }

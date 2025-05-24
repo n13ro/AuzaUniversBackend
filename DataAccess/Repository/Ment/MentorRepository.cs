@@ -48,9 +48,20 @@ namespace DataAccess.Repository.Ment
             }
         }
 
-        public async Task<IEnumerable<Mentor>> GetAllMentorRepositoryAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<DTOMentorRepository>> GetAllMentorRepositoryAsync(CancellationToken cancellationToken = default)
         {
-            return await ctx.Mentors.AsNoTracking().ToListAsync(cancellationToken);
+            return await ctx.Mentors
+                .Select(s => new DTOMentorRepository
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    FirstName = s.FirstName,
+                    LastName = s.LastName,
+                    Email = s.Email,
+                    Phone = s.Phone
+                })
+                .AsNoTracking()
+                .ToListAsync(cancellationToken);
         }
 
         public async Task<Mentor> GetByIdMentorRepositoryAsync(int id, CancellationToken cancellationToken = default)

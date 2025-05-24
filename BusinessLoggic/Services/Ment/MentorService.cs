@@ -46,11 +46,12 @@ namespace BusinessLogic.Services.Ment
             }
         }
 
-        public async Task<IEnumerable<Mentor>> GetAllMentorServiceAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<DTOMentorRepository>> GetAllMentorServiceAsync(CancellationToken cancellationToken = default)
         {
             try
             {
-                return await mentorRepository.GetAllMentorRepositoryAsync(cancellationToken);
+                var all = await mentorRepository.GetAllMentorRepositoryAsync(cancellationToken);
+                return all;
 
             }
             catch (Exception ex)
