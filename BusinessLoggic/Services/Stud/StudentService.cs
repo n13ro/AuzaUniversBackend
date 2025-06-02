@@ -2,8 +2,7 @@
 using DataAccess.DTOs.Stud;
 using DataAccess.Entites;
 using DataAccess.Repository.Stud;
-using Microsoft.AspNetCore.Http;
-using Microsoft.VisualBasic;
+
 
 namespace BusinessLogic.Services.Stud
 {

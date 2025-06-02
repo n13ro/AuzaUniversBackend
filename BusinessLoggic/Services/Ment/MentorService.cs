@@ -2,11 +2,7 @@
 using DataAccess.DTOs.Ment;
 using DataAccess.Entites;
 using DataAccess.Repository.Ment;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace BusinessLogic.Services.Ment
 {

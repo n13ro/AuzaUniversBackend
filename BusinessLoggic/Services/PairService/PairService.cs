@@ -1,11 +1,9 @@
 ﻿using BusinessLogic.DTOs.DTOPair;
-using BusinessLogic.Services.Stud;
 using DataAccess.DTOs.DTOPair;
 using DataAccess.Entites;
 using DataAccess.Repository.PairRepo;
 using DataAccess.Repository.Stud;
 
-using System.Text.Json;
 
 
 namespace BusinessLogic.Services.PairService

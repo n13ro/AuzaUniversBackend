@@ -1,11 +1,6 @@
 ﻿using BusinessLogic.DTOs.DTOPair;
-using BusinessLogic.Services.Ment;
 using BusinessLogic.Services.PairService;
-using BusinessLogic.Services.Stud;
-using DataAccess.Entites;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using Redis;
 
 namespace WebApi.Controllers.PairV1Controller
@@ -27,8 +22,7 @@ namespace WebApi.Controllers.PairV1Controller
         public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
             var pairs = await _cacheService.GetOrCreateCacheAsync("all_pairs",
-                async () => await _pairService.GetAllPairServiceAsync(cancellationToken), 
-                TimeSpan.FromMinutes(10));
+                async () => await _pairService.GetAllPairServiceAsync(cancellationToken));
 
             return Ok(new { success = true, data = pairs });
             
@@ -39,8 +33,7 @@ namespace WebApi.Controllers.PairV1Controller
             try
             {
                 var onePair = await _cacheService.GetOrCreateCacheAsync($"get_by_{id}", 
-                    async () => await _pairService.GetByIdPairServiceAsync(id, cancellationToken), 
-                    TimeSpan.FromMinutes(10));
+                    async () => await _pairService.GetByIdPairServiceAsync(id, cancellationToken));
 
                 if (onePair == null)
                 {
@@ -103,8 +96,7 @@ namespace WebApi.Controllers.PairV1Controller
         public async Task<IActionResult> GetPagination(int page, int size, CancellationToken cancellationToken)
         {
             var pairs = await _cacheService.GetOrCreateCacheAsync($"page_{page}_size_{size}",
-                async () => await _pairService.GetByPagePaginationServiceAsync(page, size, cancellationToken), 
-                TimeSpan.FromMinutes(10));
+                async () => await _pairService.GetByPagePaginationServiceAsync(page, size, cancellationToken));
             return Ok(new { success = true, data = pairs });
         }
 

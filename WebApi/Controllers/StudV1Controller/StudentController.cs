@@ -1,9 +1,7 @@
 ﻿using BusinessLogic.DTOs.Stud;
+using BusinessLogic.Services.PairService;
 using BusinessLogic.Services.Stud;
-using DataAccess.Entites;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.RateLimiting;
 using WebApi.DTOs.Stud;
 
 namespace WebApi.Controllers.StudV1Controller
@@ -13,12 +11,14 @@ namespace WebApi.Controllers.StudV1Controller
     
     public class StudentController(IStudentService studentService) : ControllerBase
     {
+
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
             var students = await studentService.GetAllStudentServiceAsync(cancellationToken); 
             return Ok(new {success = true, data = students });
         }
+
         [HttpGet("GetById/{id}")]
         public async Task<IActionResult> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
@@ -30,6 +30,7 @@ namespace WebApi.Controllers.StudV1Controller
             }
             return Ok(new { success = true, data = oneStudent});
         }
+
 
         [HttpPost("Add")]
         public async Task<IActionResult> AddAsync(DTOCreateStudentController createStudentController, CancellationToken cancellationToken)
@@ -58,7 +59,6 @@ namespace WebApi.Controllers.StudV1Controller
         {
             try
             {
-                //var updateStudent = DTOUpdateStudentService{ }
                 await studentService.UpdateStudentServiceAsync(DTOStudentService,cancellationToken);
                 return Ok(new { success = true, data = "Student updated" });
             }

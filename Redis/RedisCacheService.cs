@@ -1,10 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Redis
 {
@@ -17,7 +12,7 @@ namespace Redis
             _cache = cache;
         }
 
-        public async Task<T> GetOrCreateCacheAsync<T>(string key, Func<Task<T>> action, TimeSpan? time = null)
+        public async Task<T> GetOrCreateCacheAsync<T>(string key, Func<Task<T>> action)
         {
             var cacheData = await _cache.GetAsync(key);
 
@@ -29,7 +24,7 @@ namespace Redis
 
             var options = new DistributedCacheEntryOptions
             {
-                AbsoluteExpirationRelativeToNow = time ?? TimeSpan.FromMinutes(10)
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10)
             };
 
             await _cache.SetStringAsync(key, JsonSerializer.Serialize(data), options);
@@ -41,5 +36,20 @@ namespace Redis
         {
             await _cache.RemoveAsync(key);
         }
+
+        public async Task CreateCacheAsync<T>(string key, T data)
+        {
+            if (data != null)
+            {
+                var serelizeData = JsonSerializer.Serialize(data);
+                var options = new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10)
+                };
+                await _cache.SetStringAsync(key, serelizeData, options);
+            }
+        }
+
+
     }
 }

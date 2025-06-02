@@ -1,10 +1,6 @@
 ﻿using DataAccess.DTOs.DTOPair;
 using DataAccess.Entites;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace DataAccess.Repository.PairRepo
 {

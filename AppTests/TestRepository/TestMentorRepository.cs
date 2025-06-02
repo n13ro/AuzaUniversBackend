@@ -1,8 +1,6 @@
 ﻿using AutoFixture;
 using AutoFixture.AutoMoq;
 using DataAccess.DTOs.Ment;
-using DataAccess.DTOs.Stud;
-using DataAccess.Entites;
 using DataAccess.Repository.Ment;
 using Moq;
 

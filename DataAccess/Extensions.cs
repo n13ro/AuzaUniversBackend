@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using DataAccess.Repository.Stud;
 using DataAccess.Repository.Ment;
-using DataAccess.Repository.GroupRepo;
 using DataAccess.Repository.PairRepo;
 
 namespace DataAccess;
