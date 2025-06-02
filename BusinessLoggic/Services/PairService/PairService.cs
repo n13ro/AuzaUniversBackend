@@ -4,7 +4,7 @@ using DataAccess.DTOs.DTOPair;
 using DataAccess.Entites;
 using DataAccess.Repository.PairRepo;
 using DataAccess.Repository.Stud;
-using RabbitMQ.Services;
+
 using System.Text.Json;
 
 
@@ -14,13 +14,12 @@ namespace BusinessLogic.Services.PairService
     {
         private readonly IStudentRepository _studentRepository;
         private readonly IPairRepository _pairRepository;
-        private readonly IRabbitMQService _rabbitMQService;
 
-        public PairService(IStudentRepository studentRepository, IPairRepository pairRepository, IRabbitMQService rabbitMQService)
+
+        public PairService(IStudentRepository studentRepository, IPairRepository pairRepository)
         {
             _studentRepository = studentRepository;
             _pairRepository = pairRepository;
-            _rabbitMQService = rabbitMQService;
         }
 
         public async Task AddPairServiceAsync(DTOCreatePairService newPairDto, CancellationToken cancellationToken = default)
@@ -47,24 +46,6 @@ namespace BusinessLogic.Services.PairService
             try
             {
                 await _pairRepository.AssignPairToStudentRepositoryAsync(studentId, pairId, cancellationToken);
-                var thisOneStud = await _studentRepository.GetByIdStudentRepositoryAsync(studentId, cancellationToken);
-                var thisPair = await _pairRepository.GetByIdPairRepositoryAsync(pairId, cancellationToken);
-
-                var notification = new
-                {
-                    StudentId = studentId,
-                    PairId = pairId,
-                    PairName = thisPair.Name,
-                    PairDateTime = thisPair.DateTime,
-                    PairAuditorium = thisPair.Auditorium,
-                    Message = $"Вам назначена пара '{thisPair.Name}' {thisPair.DateTime:dd.MM.yyyy HH:mm} в аудитории {thisPair.Auditorium}",
-                    Type = "pair_assigned",
-                    CreatedAt = DateTime.UtcNow
-                };
-
-                string queueName = $"student_notifications_{studentId}";
-                await _rabbitMQService.PublishMessage(JsonSerializer.Serialize(notification), queueName);
-
 
             }
             catch(Exception ex)

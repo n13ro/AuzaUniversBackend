@@ -1,9 +1,6 @@
 using BusinessLogic;
 using BusinessLogic.Middleware;
-using Chat;
-using Chat.Services;
 using DataAccess;
-using RabbitMQ;
 using Redis;
 using WebApi.Middleware;
 
@@ -12,11 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add castom services to the container.
 builder.Services.AddDataAccess();
 builder.Services.AddBusinessLogic();
-//builder.Services.AddChatGrpcLogic();
 builder.Services.AddRedis();
-builder.Services.AddRabbitMQ();
-
-
 
 
 //-----------

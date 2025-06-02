@@ -31,8 +31,6 @@
   <ItemGroup>
     <ProjectReference Include="..\AppTests\AppTests.csproj" />
     <ProjectReference Include="..\BusinessLoggic\BusinessLogic.csproj" />
-    <ProjectReference Include="..\Chat\Chat.csproj" />
-    <ProjectReference Include="..\RabbitMQ\RabbitMQ.csproj" />
     <ProjectReference Include="..\Redis\Redis.csproj" />
   </ItemGroup>
 
