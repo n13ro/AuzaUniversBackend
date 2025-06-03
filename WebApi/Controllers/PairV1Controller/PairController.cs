@@ -113,5 +113,18 @@ namespace WebApi.Controllers.PairV1Controller
                 throw new Exception(ex.Message);
             }
         }
+        [HttpPost("AssignPairToMentor")]
+        public async Task<IActionResult> AssignPairToMentorServiceAsync(int mentorId, int pairId, CancellationToken cancellationToken)
+        {
+            try
+            {
+                await _pairService.AssignPairToMentorServiceAsync(mentorId, pairId, cancellationToken);
+                return Ok(new { success = true, message = "Pair assigned to mentor successfully" });
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

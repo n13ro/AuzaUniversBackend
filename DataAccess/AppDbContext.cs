@@ -25,7 +25,7 @@ public class AppDbContext : DbContext
 
         // Student - Pair (Many-to-Many)
         modelBuilder.Entity<Student>()
-            .HasMany(s => s.MyPair)
+            .HasMany(s => s.MyPairs)
             .WithMany(p => p.Students)
             .UsingEntity(j => j.ToTable("StudentPairs"));
 
@@ -36,10 +36,11 @@ public class AppDbContext : DbContext
         //    .HasForeignKey(kp => kp.GroupId);
 
         // Mentor - Pair (One-to-Many)
-        modelBuilder.Entity<Pair>()
-            .HasOne(m => m.Mentor)
-            .WithMany(p => p.Pairs)
-            .HasForeignKey(k => k.MentorId);
+        modelBuilder.Entity<Mentor>()
+            .HasMany(m => m.MyPairs)
+            .WithMany(p => p.Mentors)
+            .UsingEntity(j => j.ToTable("MentorPairs"));
+            
 
         // Mentor - Group (Many-to-Many)
         //modelBuilder.Entity<Group>()

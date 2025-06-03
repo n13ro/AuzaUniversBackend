@@ -28,13 +28,52 @@ namespace DataAccess.Repository.PairRepo
             }
         }
 
+        public async Task AssignPairToMentorRepositoryAsync(int mentorId, int pairId, CancellationToken cancellationToken = default)
+        {
+            await using var transaction = await ctx.Database.BeginTransactionAsync(cancellationToken);
+
+            try
+            {
+                var mentor = await ctx.Mentors
+                    .Include(p => p.MyPairs)
+                    .FirstAsync(k => k.Id == mentorId, cancellationToken);
+
+                var pair = await ctx.Pairs
+                    .Include(s => s.Students)
+                    .FirstAsync(k => k.Id == pairId, cancellationToken);
+
+                if(mentor == null && pair == null)
+                {
+                    throw new Exception("Mentor or Pair not found");
+                }
+
+                if(!mentor.MyPairs.Contains(pair))
+                {
+                    mentor.MyPairs.Add(pair);
+                    await ctx.SaveChangesAsync(cancellationToken);
+                }
+                if (!pair.Mentors.Contains(mentor))
+                {
+                    pair.Mentors.Add(mentor);
+                    await ctx.SaveChangesAsync(cancellationToken);
+                }
+
+                await transaction.CommitAsync(cancellationToken);
+            }
+            catch(Exception ex)
+            {
+                await transaction.RollbackAsync(cancellationToken);
+                throw;
+            }
+        }
+
         public async Task AssignPairToStudentRepositoryAsync(int studentId, int pairId, CancellationToken cancellationToken = default)
         {
             await using var transaction = await ctx.Database.BeginTransactionAsync(cancellationToken);
             try
             {
                 var student = await ctx.Students
-                    .Include(p => p.MyPair)
+                    .Include(p => p.MyPairs)
                     .FirstAsync(k => k.Id == studentId, cancellationToken);
 
                 var pair = await ctx.Pairs
@@ -45,9 +84,9 @@ namespace DataAccess.Repository.PairRepo
                 {
                     throw new Exception("Student or Pair not found");
                 }
-                if (!student.MyPair.Contains(pair))
+                if (!student.MyPairs.Contains(pair))
                 {
-                    student.MyPair.Add(pair);
+                    student.MyPairs.Add(pair);
                     await ctx.SaveChangesAsync(cancellationToken);
                 }
                 if (!pair.Students.Contains(student))

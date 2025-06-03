@@ -15,7 +15,7 @@ namespace DataAccess.Entites
         //public int? GroupId { get; set; }
         //public Group? GroupPair { get; set; }
 
-        public int? MentorId { get;set; }
-        public Mentor? Mentor { get; set; }
+        //public int? MentorId { get;set; }
+        public HashSet<Mentor> Mentors { get; set; } = new();
     }
 }

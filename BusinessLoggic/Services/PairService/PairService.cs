@@ -39,6 +39,18 @@ namespace BusinessLogic.Services.PairService
             
         }
 
+        public async Task AssignPairToMentorServiceAsync(int mentorId, int pairId, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                await _pairRepository.AssignPairToMentorRepositoryAsync(mentorId, pairId, cancellationToken);
+            }
+            catch(Exception ex)
+            {
+                throw new Exception($"Err add pair service {ex.Message}");
+            }
+        }
+
         public async Task AssignPairToStudentServiceAsync(int studentId, int pairId, CancellationToken cancellationToken = default)
         {
             try

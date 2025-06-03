@@ -56,8 +56,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-//app.MapGrpcService<ChatService>().RequireCors("AllowedHosts");
-
 app.MapSwagger();
 
 app.Run();

@@ -11,6 +11,6 @@ namespace DataAccess.Entites
         public required string Phone { get; set; }
 
         //public HashSet<Group> Groups { get; set; } = new();
-        public HashSet<Pair> Pairs { get; set; } = new();
+        public HashSet<Pair> MyPairs { get; set; } = new();
     }
 }

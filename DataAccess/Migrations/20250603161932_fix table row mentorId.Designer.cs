@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250517181435_create table")]
-    partial class createtable
+    [Migration("20250603161932_fix table row mentorId")]
+    partial class fixtablerowmentorId
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,9 +75,6 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("MentorId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -85,8 +82,6 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Id");
-
-                    b.HasIndex("MentorId");
 
                     b.ToTable("Pairs");
                 });
@@ -127,35 +122,56 @@ namespace DataAccess.Migrations
                     b.ToTable("Students");
                 });
 
+            modelBuilder.Entity("MentorPair", b =>
+                {
+                    b.Property<int>("MentorsId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("MyPairsId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("MentorsId", "MyPairsId");
+
+                    b.HasIndex("MyPairsId");
+
+                    b.ToTable("MentorPairs", (string)null);
+                });
+
             modelBuilder.Entity("PairStudent", b =>
                 {
-                    b.Property<int>("MyPairId")
+                    b.Property<int>("MyPairsId")
                         .HasColumnType("integer");
 
                     b.Property<int>("StudentsId")
                         .HasColumnType("integer");
 
-                    b.HasKey("MyPairId", "StudentsId");
+                    b.HasKey("MyPairsId", "StudentsId");
 
                     b.HasIndex("StudentsId");
 
                     b.ToTable("StudentPairs", (string)null);
                 });
 
-            modelBuilder.Entity("DataAccess.Entites.Pair", b =>
+            modelBuilder.Entity("MentorPair", b =>
                 {
-                    b.HasOne("DataAccess.Entites.Mentor", "Mentor")
-                        .WithMany("Pairs")
-                        .HasForeignKey("MentorId");
+                    b.HasOne("DataAccess.Entites.Mentor", null)
+                        .WithMany()
+                        .HasForeignKey("MentorsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Mentor");
+                    b.HasOne("DataAccess.Entites.Pair", null)
+                        .WithMany()
+                        .HasForeignKey("MyPairsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("PairStudent", b =>
                 {
                     b.HasOne("DataAccess.Entites.Pair", null)
                         .WithMany()
-                        .HasForeignKey("MyPairId")
+                        .HasForeignKey("MyPairsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -164,11 +180,6 @@ namespace DataAccess.Migrations
                         .HasForeignKey("StudentsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("DataAccess.Entites.Mentor", b =>
-                {
-                    b.Navigation("Pairs");
                 });
 #pragma warning restore 612, 618
         }

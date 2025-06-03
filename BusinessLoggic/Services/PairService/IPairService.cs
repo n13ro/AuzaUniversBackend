@@ -17,5 +17,7 @@ namespace BusinessLogic.Services.PairService
         Task<IEnumerable<Pair>> GetByPagePaginationServiceAsync(int page, int size, CancellationToken cancellationToken = default);
 
         Task AssignPairToStudentServiceAsync(int studentId, int pairId, CancellationToken cancellationToken = default);
+
+        Task AssignPairToMentorServiceAsync(int mentorId, int pairId, CancellationToken cancellationToken = default);
     }
 }

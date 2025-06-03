@@ -30,6 +30,22 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Pairs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Auditorium = table.Column<int>(type: "integer", nullable: false),
+                    MentorId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Pairs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Students",
                 columns: table => new
                 {
@@ -47,39 +63,42 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Pairs",
+                name: "MentorPairs",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Auditorium = table.Column<int>(type: "integer", nullable: false),
-                    MentorId = table.Column<int>(type: "integer", nullable: true)
+                    MentorsId = table.Column<int>(type: "integer", nullable: false),
+                    MyPairsId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Pairs", x => x.Id);
+                    table.PrimaryKey("PK_MentorPairs", x => new { x.MentorsId, x.MyPairsId });
                     table.ForeignKey(
-                        name: "FK_Pairs_Mentors_MentorId",
-                        column: x => x.MentorId,
+                        name: "FK_MentorPairs_Mentors_MentorsId",
+                        column: x => x.MentorsId,
                         principalTable: "Mentors",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MentorPairs_Pairs_MyPairsId",
+                        column: x => x.MyPairsId,
+                        principalTable: "Pairs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "StudentPairs",
                 columns: table => new
                 {
-                    MyPairId = table.Column<int>(type: "integer", nullable: false),
+                    MyPairsId = table.Column<int>(type: "integer", nullable: false),
                     StudentsId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_StudentPairs", x => new { x.MyPairId, x.StudentsId });
+                    table.PrimaryKey("PK_StudentPairs", x => new { x.MyPairsId, x.StudentsId });
                     table.ForeignKey(
-                        name: "FK_StudentPairs_Pairs_MyPairId",
-                        column: x => x.MyPairId,
+                        name: "FK_StudentPairs_Pairs_MyPairsId",
+                        column: x => x.MyPairsId,
                         principalTable: "Pairs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -92,6 +111,11 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_MentorPairs_MyPairsId",
+                table: "MentorPairs",
+                column: "MyPairsId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Mentors_Id",
                 table: "Mentors",
                 column: "Id",
@@ -101,11 +125,6 @@ namespace DataAccess.Migrations
                 name: "IX_Pairs_Id",
                 table: "Pairs",
                 column: "Id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Pairs_MentorId",
-                table: "Pairs",
-                column: "MentorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StudentPairs_StudentsId",
@@ -123,16 +142,19 @@ namespace DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "MentorPairs");
+
+            migrationBuilder.DropTable(
                 name: "StudentPairs");
+
+            migrationBuilder.DropTable(
+                name: "Mentors");
 
             migrationBuilder.DropTable(
                 name: "Pairs");
 
             migrationBuilder.DropTable(
                 name: "Students");
-
-            migrationBuilder.DropTable(
-                name: "Mentors");
         }
     }
 }

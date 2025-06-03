@@ -57,7 +57,7 @@ namespace AppTests.TestRepository
         {
             //arr
             const int testId = 1;
-            var oneStudent = _fixture.Build<Student>().With(s => s.Id, testId).Without(s => s.MyPair).Create();
+            var oneStudent = _fixture.Build<Student>().With(s => s.Id, testId).Without(s => s.MyPairs).Create();
             var mockRepo = _fixture.Freeze<Mock<IStudentRepository>>();
 
             mockRepo.Setup(o =>
