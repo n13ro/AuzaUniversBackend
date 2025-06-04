@@ -1,19 +1,27 @@
 ﻿using BusinessLogic.DTOs.Ment;
 using BusinessLogic.Services.Ment;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers.MentV1Controller
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class MentorController(IMentorService mentorService) : ControllerBase
+    public class MentorController : ControllerBase
     {
+        private readonly IMediator _mediator;
+
+        public MentorController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
             try
             {
-                var mentors = await mentorService.GetAllMentorServiceAsync(cancellationToken);
+                var mentors = await _mediator.Send(new GetAllMentorsQuery(), cancellationToken);
                 return Ok(new {success = true, data = mentors});
             }
             catch (Exception ex)
@@ -25,7 +33,7 @@ namespace WebApi.Controllers.MentV1Controller
         public async Task<IActionResult> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
 
-            var oneMentor = await mentorService.GetByIdMentorServiceAsync(id, cancellationToken);
+            var oneMentor = await _mediator.Send(new GetByIdMentorQuery(id), cancellationToken);
             if (oneMentor == null)
             {
                 return NotFound(new { success = false, message = "Mentor not found" });
@@ -39,7 +47,7 @@ namespace WebApi.Controllers.MentV1Controller
         {
             try
             {
-                await mentorService.AddMentorServiceAsync(DTOMentorService, cancellationToken);
+                await _mediator.Send(new AddMentorCommand(DTOMentorService), cancellationToken);
                 return Ok(new { success = true, data = "Mentor is created" });
 
             }
@@ -53,7 +61,7 @@ namespace WebApi.Controllers.MentV1Controller
         {
             try
             {
-                await mentorService.UpdateMentorServiceAsync(DTOMentorService, cancellationToken);
+                await _mediator.Send(new UpdateMentorCommand(DTOMentorService), cancellationToken);
                 return Ok(new { success = true, data = "Mentor updated" });
             }
             catch (Exception ex)
@@ -66,7 +74,7 @@ namespace WebApi.Controllers.MentV1Controller
         {
             try
             {
-                await mentorService.DeleteMentorServiceAsync(id, cancellationToken);
+                await _mediator.Send(new DeleteMentorCommand(id), cancellationToken);
                 return Ok(new { success = true, data = "Student deleted" });
 
             }
@@ -78,7 +86,7 @@ namespace WebApi.Controllers.MentV1Controller
         [HttpGet("GetPagination")]
         public async Task<IActionResult> GetPagination(int page, int size, CancellationToken cancellationToken)
         {
-            var mentors = await mentorService.GetByPagePaginationServiceAsync(page, size, cancellationToken);
+            var mentors = await _mediator.Send(new GetByPagePaginationMentorQuery(page, size), cancellationToken);
             return Ok(new { success = true, data = mentors });
         }
     }

@@ -7,11 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Features\PairR\Commands\" />
+    <Folder Include="Features\PairR\Queries\" />
+    <Folder Include="Features\StudR\Commands\" />
+    <Folder Include="Features\StudR\Queries\" />
     <Folder Include="Intefaces\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.5" />
   </ItemGroup>
 
   <ItemGroup>

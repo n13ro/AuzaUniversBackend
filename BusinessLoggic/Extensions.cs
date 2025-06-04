@@ -2,6 +2,7 @@
 using BusinessLogic.Services.PairService;
 using BusinessLogic.Services.Stud;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 
 namespace BusinessLogic
@@ -10,11 +11,13 @@ namespace BusinessLogic
     {
         public static IServiceCollection AddBusinessLogic(this IServiceCollection services)
         {
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
             services.AddScoped<IStudentService, StudentService>();
             services.AddScoped<IMentorService, MentorService>();
             services.AddScoped<IPairService, PairService>();
-            
+
+
             return services;
         }
         
