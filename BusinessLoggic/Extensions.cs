@@ -17,7 +17,6 @@ namespace BusinessLogic
             services.AddScoped<IMentorService, MentorService>();
             services.AddScoped<IPairService, PairService>();
 
-
             return services;
         }
         
