@@ -7,10 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Features\PairR\Commands\" />
-    <Folder Include="Features\PairR\Queries\" />
     <Folder Include="Features\StudR\Commands\" />
-    <Folder Include="Features\StudR\Queries\" />
+    <Folder Include="Features\StudR\Querys\" />
     <Folder Include="Intefaces\" />
   </ItemGroup>
 

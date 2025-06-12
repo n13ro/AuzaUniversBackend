@@ -7,7 +7,7 @@ namespace BusinessLogic.Features.PairR.Commands
 {
     public record AddPairCommand(DTOCreatePairService Pair) : IRequest;
     public class AddPairHandler : IRequestHandler<AddPairCommand>
-    {
+    {   
         private readonly IPairRepository _pairRepository;
 
         public AddPairHandler(IPairRepository pairRepository)
