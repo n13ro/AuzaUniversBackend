@@ -10,6 +10,8 @@ public class AppDbContext : DbContext
     public DbSet<Student> Students { get; set; }
     public DbSet<Pair> Pairs { get; set; }
     public DbSet<Mentor> Mentors { get; set; }
+
+    public DbSet<Coins> Coins { get; set; }
     //public DbSet<Group> Groups { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> ctx) : base(ctx){}
@@ -28,6 +30,12 @@ public class AppDbContext : DbContext
             .HasMany(s => s.MyPairs)
             .WithMany(p => p.Students)
             .UsingEntity(j => j.ToTable("StudentPairs"));
+
+        // Student - Coins (Many-to-Many)
+        modelBuilder.Entity<Student>()
+            .HasMany(s => s.Coins)
+            .WithMany(c => c.Students)
+            .UsingEntity(j => j.ToTable("StudentCoins"));
 
         // Group - Pair (One-to-Many)
         //modelBuilder.Entity<Pair>()
@@ -51,6 +59,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Student>().HasIndex(s => s.Id).IsUnique();
         modelBuilder.Entity<Mentor>().HasIndex(m => m.Id).IsUnique();
         modelBuilder.Entity<Pair>().HasIndex(p => p.Id);
+        modelBuilder.Entity<Coins>().HasIndex(k => k.Id);
 
         //modelBuilder.Entity<Group>().HasKey(g => g.Id);
     }

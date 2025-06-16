@@ -7,11 +7,23 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class createtable : Migration
+    public partial class createtablecoins : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Coins",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Coins", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Mentors",
                 columns: table => new
@@ -37,8 +49,7 @@ namespace DataAccess.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
                     DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Auditorium = table.Column<int>(type: "integer", nullable: false),
-                    MentorId = table.Column<int>(type: "integer", nullable: true)
+                    Auditorium = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -87,6 +98,30 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "StudentCoins",
+                columns: table => new
+                {
+                    CoinsId = table.Column<int>(type: "integer", nullable: false),
+                    StudentsId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StudentCoins", x => new { x.CoinsId, x.StudentsId });
+                    table.ForeignKey(
+                        name: "FK_StudentCoins_Coins_CoinsId",
+                        column: x => x.CoinsId,
+                        principalTable: "Coins",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_StudentCoins_Students_StudentsId",
+                        column: x => x.StudentsId,
+                        principalTable: "Students",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "StudentPairs",
                 columns: table => new
                 {
@@ -111,6 +146,11 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Coins_Id",
+                table: "Coins",
+                column: "Id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_MentorPairs_MyPairsId",
                 table: "MentorPairs",
                 column: "MyPairsId");
@@ -125,6 +165,11 @@ namespace DataAccess.Migrations
                 name: "IX_Pairs_Id",
                 table: "Pairs",
                 column: "Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StudentCoins_StudentsId",
+                table: "StudentCoins",
+                column: "StudentsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StudentPairs_StudentsId",
@@ -145,10 +190,16 @@ namespace DataAccess.Migrations
                 name: "MentorPairs");
 
             migrationBuilder.DropTable(
+                name: "StudentCoins");
+
+            migrationBuilder.DropTable(
                 name: "StudentPairs");
 
             migrationBuilder.DropTable(
                 name: "Mentors");
+
+            migrationBuilder.DropTable(
+                name: "Coins");
 
             migrationBuilder.DropTable(
                 name: "Pairs");

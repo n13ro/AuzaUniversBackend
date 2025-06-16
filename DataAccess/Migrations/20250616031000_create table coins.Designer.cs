@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250603161138_create table")]
-    partial class createtable
+    [Migration("20250616031000_create table coins")]
+    partial class createtablecoins
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,36 @@ namespace DataAccess.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("CoinsStudent", b =>
+                {
+                    b.Property<int>("CoinsId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("StudentsId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("CoinsId", "StudentsId");
+
+                    b.HasIndex("StudentsId");
+
+                    b.ToTable("StudentCoins", (string)null);
+                });
+
+            modelBuilder.Entity("DataAccess.Entites.Coins", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id");
+
+                    b.ToTable("Coins");
+                });
 
             modelBuilder.Entity("DataAccess.Entites.Mentor", b =>
                 {
@@ -74,9 +104,6 @@ namespace DataAccess.Migrations
 
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<int?>("MentorId")
-                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -153,6 +180,21 @@ namespace DataAccess.Migrations
                     b.HasIndex("StudentsId");
 
                     b.ToTable("StudentPairs", (string)null);
+                });
+
+            modelBuilder.Entity("CoinsStudent", b =>
+                {
+                    b.HasOne("DataAccess.Entites.Coins", null)
+                        .WithMany()
+                        .HasForeignKey("CoinsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataAccess.Entites.Student", null)
+                        .WithMany()
+                        .HasForeignKey("StudentsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MentorPair", b =>

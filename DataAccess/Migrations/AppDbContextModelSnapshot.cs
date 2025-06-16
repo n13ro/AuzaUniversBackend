@@ -22,6 +22,39 @@ namespace DataAccess.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("CoinsStudent", b =>
+                {
+                    b.Property<int>("CoinsId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("StudentsId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("CoinsId", "StudentsId");
+
+                    b.HasIndex("StudentsId");
+
+                    b.ToTable("StudentCoins", (string)null);
+                });
+
+            modelBuilder.Entity("DataAccess.Entites.Coins", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id");
+
+                    b.ToTable("Coins");
+                });
+
             modelBuilder.Entity("DataAccess.Entites.Mentor", b =>
                 {
                     b.Property<int>("Id")
@@ -147,6 +180,21 @@ namespace DataAccess.Migrations
                     b.HasIndex("StudentsId");
 
                     b.ToTable("StudentPairs", (string)null);
+                });
+
+            modelBuilder.Entity("CoinsStudent", b =>
+                {
+                    b.HasOne("DataAccess.Entites.Coins", null)
+                        .WithMany()
+                        .HasForeignKey("CoinsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataAccess.Entites.Student", null)
+                        .WithMany()
+                        .HasForeignKey("StudentsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MentorPair", b =>
