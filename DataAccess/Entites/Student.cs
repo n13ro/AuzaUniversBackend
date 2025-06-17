@@ -13,6 +13,7 @@ namespace DataAccess.Entites
         public HashSet<Pair> MyPairs { get; set; } = new();
 
         public HashSet<Coins> Coins { get; set; } = new();
+
         //public int? MyGroupId { get; set; }
         //public Group? MyGroup { get; set; }
 
