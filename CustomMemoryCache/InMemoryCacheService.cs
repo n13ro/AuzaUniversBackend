@@ -17,10 +17,13 @@ namespace CustomMemoryCache
 
         public async Task<T> GetOrCreateCacheAsync<T>(string key, Func<Task<T>> action)
         {
-            if (_cache.TryGetValue(key, out var obj) && obj is T cacheValue)
+            if (_cache.TryGetValue(key, out T obj))
             {
-                _logger.LogInformation("Cache hit for key: {Key}", key);
-                return cacheValue;
+                if(obj != null)
+                {
+                    _logger.LogInformation("Cache hit for key: {Key}", key);
+                    return (T)obj;
+                }
             }
 
             _logger.LogInformation("Cache miss for key: {Key}", key);

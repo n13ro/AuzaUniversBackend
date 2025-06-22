@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Entites
 {
-    public class Coins : BaseEntity
+    public class Coin : BaseEntity
     {
         [Range(1, 100)]
         public decimal Amount { get; set; }
-        public HashSet<Student> Students { get; set; } = new();
+        public ICollection<Student>? Students { get; set; }
 
     }
 }

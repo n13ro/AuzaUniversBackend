@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250617055052_fix")]
-    partial class fix
+    [Migration("20250622140511_edit tables fix")]
+    partial class edittablesfix
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace DataAccess.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("CoinsStudent", b =>
+            modelBuilder.Entity("CoinStudent", b =>
                 {
                     b.Property<int>("CoinsId")
                         .HasColumnType("integer");
@@ -40,9 +40,10 @@ namespace DataAccess.Migrations
                     b.ToTable("StudentCoins", (string)null);
                 });
 
-            modelBuilder.Entity("DataAccess.Entites.Coins", b =>
+            modelBuilder.Entity("DataAccess.Entites.Coin", b =>
                 {
                     b.Property<int>("Id")
+                        .IsConcurrencyToken()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
@@ -58,9 +59,29 @@ namespace DataAccess.Migrations
                     b.ToTable("Coins");
                 });
 
+            modelBuilder.Entity("DataAccess.Entites.Group", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id");
+
+                    b.ToTable("Groups");
+                });
+
             modelBuilder.Entity("DataAccess.Entites.Mentor", b =>
                 {
                     b.Property<int>("Id")
+                        .IsConcurrencyToken()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
@@ -97,6 +118,7 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("DataAccess.Entites.Pair", b =>
                 {
                     b.Property<int>("Id")
+                        .IsConcurrencyToken()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
@@ -122,6 +144,7 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("DataAccess.Entites.Student", b =>
                 {
                     b.Property<int>("Id")
+                        .IsConcurrencyToken()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
@@ -139,6 +162,12 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("Level")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("MyGroupId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -152,7 +181,24 @@ namespace DataAccess.Migrations
                     b.HasIndex("Id")
                         .IsUnique();
 
+                    b.HasIndex("MyGroupId");
+
                     b.ToTable("Students");
+                });
+
+            modelBuilder.Entity("GroupMentor", b =>
+                {
+                    b.Property<int>("GroupsId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("MentorsId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("GroupsId", "MentorsId");
+
+                    b.HasIndex("MentorsId");
+
+                    b.ToTable("MentorGroups", (string)null);
                 });
 
             modelBuilder.Entity("MentorPair", b =>
@@ -185,9 +231,9 @@ namespace DataAccess.Migrations
                     b.ToTable("StudentPairs", (string)null);
                 });
 
-            modelBuilder.Entity("CoinsStudent", b =>
+            modelBuilder.Entity("CoinStudent", b =>
                 {
-                    b.HasOne("DataAccess.Entites.Coins", null)
+                    b.HasOne("DataAccess.Entites.Coin", null)
                         .WithMany()
                         .HasForeignKey("CoinsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -196,6 +242,32 @@ namespace DataAccess.Migrations
                     b.HasOne("DataAccess.Entites.Student", null)
                         .WithMany()
                         .HasForeignKey("StudentsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DataAccess.Entites.Student", b =>
+                {
+                    b.HasOne("DataAccess.Entites.Group", "MyGroup")
+                        .WithMany("Students")
+                        .HasForeignKey("MyGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MyGroup");
+                });
+
+            modelBuilder.Entity("GroupMentor", b =>
+                {
+                    b.HasOne("DataAccess.Entites.Group", null)
+                        .WithMany()
+                        .HasForeignKey("GroupsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataAccess.Entites.Mentor", null)
+                        .WithMany()
+                        .HasForeignKey("MentorsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -228,6 +300,11 @@ namespace DataAccess.Migrations
                         .HasForeignKey("StudentsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("DataAccess.Entites.Group", b =>
+                {
+                    b.Navigation("Students");
                 });
 #pragma warning restore 612, 618
         }

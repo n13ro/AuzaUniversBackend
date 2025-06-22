@@ -3,6 +3,7 @@ using System;
 using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250622135132_edit tables")]
+    partial class edittables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,6 +95,9 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int?>("GroupId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -105,6 +111,8 @@ namespace DataAccess.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
 
                     b.HasIndex("Id")
                         .IsUnique();
@@ -155,6 +163,9 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int?>("GroupId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -162,7 +173,7 @@ namespace DataAccess.Migrations
                     b.Property<int>("Level")
                         .HasColumnType("integer");
 
-                    b.Property<int>("MyGroupId")
+                    b.Property<int?>("MyGroupId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")
@@ -175,27 +186,14 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GroupId");
+
                     b.HasIndex("Id")
                         .IsUnique();
 
                     b.HasIndex("MyGroupId");
 
                     b.ToTable("Students");
-                });
-
-            modelBuilder.Entity("GroupMentor", b =>
-                {
-                    b.Property<int>("GroupsId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("MentorsId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("GroupsId", "MentorsId");
-
-                    b.HasIndex("MentorsId");
-
-                    b.ToTable("MentorGroups", (string)null);
                 });
 
             modelBuilder.Entity("MentorPair", b =>
@@ -243,30 +241,24 @@ namespace DataAccess.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DataAccess.Entites.Student", b =>
-                {
-                    b.HasOne("DataAccess.Entites.Group", "MyGroup")
-                        .WithMany("Students")
-                        .HasForeignKey("MyGroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MyGroup");
-                });
-
-            modelBuilder.Entity("GroupMentor", b =>
+            modelBuilder.Entity("DataAccess.Entites.Mentor", b =>
                 {
                     b.HasOne("DataAccess.Entites.Group", null)
-                        .WithMany()
-                        .HasForeignKey("GroupsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Mentors")
+                        .HasForeignKey("GroupId");
+                });
 
-                    b.HasOne("DataAccess.Entites.Mentor", null)
+            modelBuilder.Entity("DataAccess.Entites.Student", b =>
+                {
+                    b.HasOne("DataAccess.Entites.Group", null)
+                        .WithMany("Students")
+                        .HasForeignKey("GroupId");
+
+                    b.HasOne("DataAccess.Entites.Group", "MyGroup")
                         .WithMany()
-                        .HasForeignKey("MentorsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MyGroupId");
+
+                    b.Navigation("MyGroup");
                 });
 
             modelBuilder.Entity("MentorPair", b =>
@@ -301,6 +293,8 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DataAccess.Entites.Group", b =>
                 {
+                    b.Navigation("Mentors");
+
                     b.Navigation("Students");
                 });
 #pragma warning restore 612, 618

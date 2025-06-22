@@ -1,5 +1,7 @@
 ﻿
 
+using System.ComponentModel.DataAnnotations;
+
 namespace DataAccess.Entites
 {
     public class Student : BaseEntity
@@ -10,12 +12,15 @@ namespace DataAccess.Entites
         public required string Email { get; set; }
         public required string Phone { get; set; }
 
-        public HashSet<Pair> MyPairs { get; set; } = new();
+        [Range(1, 100)]
+        public int Level { get; set; } = 1;
 
-        public HashSet<Coins> Coins { get; set; } = new();
+        public ICollection<Pair>? MyPairs { get; set; }
 
-        //public int? MyGroupId { get; set; }
-        //public Group? MyGroup { get; set; }
+        public ICollection<Coin>? Coins { get; set; }
+
+        public int MyGroupId { get; set; }
+        public Group? MyGroup { get; set; }
 
     }
 }

@@ -10,12 +10,8 @@ namespace DataAccess.Entites
 
         public required int Auditorium { get; set; }
 
-        public HashSet<Student> Students { get; set; } = new();
+        public ICollection<Student>? Students { get; set; }
 
-        //public int? GroupId { get; set; }
-        //public Group? GroupPair { get; set; }
-
-        //public int? MentorId { get;set; }
-        public HashSet<Mentor> Mentors { get; set; } = new();
+        public ICollection<Mentor>? Mentors { get; set; }
     }
 }

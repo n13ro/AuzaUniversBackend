@@ -10,7 +10,7 @@ namespace DataAccess.Entites
         public required string Email { get; set; }
         public required string Phone { get; set; }
 
-        //public HashSet<Group> Groups { get; set; } = new();
-        public HashSet<Pair> MyPairs { get; set; } = new();
+        public ICollection<Group>? Groups { get; set; }
+        public ICollection<Pair>? MyPairs { get; set; }
     }
 }

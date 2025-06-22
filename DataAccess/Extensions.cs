@@ -18,7 +18,8 @@ public static class Extensions
         services.AddDbContext<AppDbContext>(ctx =>
         {
             ctx.UseNpgsql("Host=localhost;Port=5432;Database=AuzaUniversDb;Username=postgres;Password=12345");
-        });
+            
+        }, ServiceLifetime.Scoped);
 
         return services;
     }

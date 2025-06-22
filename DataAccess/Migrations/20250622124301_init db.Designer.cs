@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250616031000_create table coins")]
-    partial class createtablecoins
+    [Migration("20250622124301_init db")]
+    partial class initdb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,10 +43,14 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("DataAccess.Entites.Coins", b =>
                 {
                     b.Property<int>("Id")
+                        .IsConcurrencyToken()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
@@ -58,6 +62,7 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("DataAccess.Entites.Mentor", b =>
                 {
                     b.Property<int>("Id")
+                        .IsConcurrencyToken()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
@@ -94,6 +99,7 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("DataAccess.Entites.Pair", b =>
                 {
                     b.Property<int>("Id")
+                        .IsConcurrencyToken()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
@@ -119,6 +125,7 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("DataAccess.Entites.Student", b =>
                 {
                     b.Property<int>("Id")
+                        .IsConcurrencyToken()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 

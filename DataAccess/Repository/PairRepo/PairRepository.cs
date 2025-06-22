@@ -14,6 +14,7 @@ namespace DataAccess.Repository.PairRepo
                 Name = pair.Name,
                 DateTime = pair.DateTime,
                 Auditorium = pair.Auditorium,
+                
             };
             await using var transaction = await ctx.Database.BeginTransactionAsync(cancellationToken);
             try
