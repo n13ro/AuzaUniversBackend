@@ -1,5 +1,4 @@
-﻿using DataAccess.DAOs.Stud;
-using DataAccess.DTOs.Stud;
+﻿using DataAccess.DTOs.Stud;
 using DataAccess.Entites;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,7 +7,7 @@ namespace DataAccess.Repository.Stud
 {
     public class StudentRepository(AppDbContext ctx) : IStudentRepository
     {
-
+        
         public async Task AddStudentRepositoryAsync(DTOCreateStudentRepository student, CancellationToken cancellationToken = default)
         {
             var newStudent = new Student

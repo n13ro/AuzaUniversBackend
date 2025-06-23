@@ -59,6 +59,7 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("DataAccess.Entites.Group", b =>
                 {
                     b.Property<int>("Id")
+                        .IsConcurrencyToken()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
@@ -70,7 +71,8 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Id");
+                    b.HasIndex("Id")
+                        .IsUnique();
 
                     b.ToTable("Groups");
                 });

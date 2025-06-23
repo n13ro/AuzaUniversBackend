@@ -3,7 +3,6 @@ using BusinessLogic.Middleware;
 using DataAccess;
 using Redis;
 using WebApi.Middleware;
-using CustomMemoryCache;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +11,6 @@ builder.Services.AddMemoryCache();
 // Add castom services to the container.
 builder.Services.AddDataAccess();
 builder.Services.AddBusinessLogic();
-builder.Services.AddInMemoryCache();
 //builder.Services.AddRedis();
 
 

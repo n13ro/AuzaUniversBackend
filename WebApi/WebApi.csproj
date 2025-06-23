@@ -31,7 +31,6 @@
   <ItemGroup>
     <ProjectReference Include="..\AppTests\AppTests.csproj" />
     <ProjectReference Include="..\BusinessLoggic\BusinessLogic.csproj" />
-    <ProjectReference Include="..\CustomMemoryCache\CustomMemoryCache.csproj" />
     <ProjectReference Include="..\Redis\Redis.csproj" />
   </ItemGroup>
 

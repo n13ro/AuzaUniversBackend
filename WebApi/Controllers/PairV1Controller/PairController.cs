@@ -1,6 +1,5 @@
 ﻿using BusinessLogic.DTOs.DTOPair;
 using BusinessLogic.Services.PairService;
-using CustomMemoryCache;
 using Microsoft.AspNetCore.Mvc;
 using Redis;
 
@@ -11,21 +10,17 @@ namespace WebApi.Controllers.PairV1Controller
     public class PairController : ControllerBase
     {
         //private readonly RedisCacheService _cacheService;
-        private readonly InMemoryCacheService _cacheService;
         private readonly IPairService _pairService;
 
-        public PairController(IPairService pairService, InMemoryCacheService memoryCacheService)
+        public PairController(IPairService pairService)
         {
-            this._cacheService = memoryCacheService;
             this._pairService = pairService;
         }
 
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
-            var pairs = await _cacheService.GetOrCreateCacheAsync("all_pairs",
-                async () => await _pairService.GetAllPairServiceAsync(cancellationToken));
-
+            var pairs = await _pairService.GetAllPairServiceAsync(cancellationToken);
             return Ok(new { success = true, data = pairs });
             
         }
@@ -34,8 +29,7 @@ namespace WebApi.Controllers.PairV1Controller
         {
             try
             {
-                var onePair = await _cacheService.GetOrCreateCacheAsync($"get_by_{id}", 
-                    async () => await _pairService.GetByIdPairServiceAsync(id, cancellationToken));
+                var onePair = await _pairService.GetByIdPairServiceAsync(id, cancellationToken);
 
                 if (onePair == null)
                 {
@@ -55,7 +49,7 @@ namespace WebApi.Controllers.PairV1Controller
             try
             {
                 await _pairService.AddPairServiceAsync(DTOPairService, cancellationToken);
-                await _cacheService.RemoveCacheAsync("all_pairs");
+                
                 return Ok(new { message = "Pair is created" });
 
             }
@@ -70,7 +64,6 @@ namespace WebApi.Controllers.PairV1Controller
             try
             {
                 await _pairService.UpdatePairServiceAsync(DTOPairService, cancellationToken);
-                await _cacheService.RemoveCacheAsync("all_pairs");
                 return Ok(new { success = true, data = "Pair updated" });
 
             }
@@ -85,7 +78,6 @@ namespace WebApi.Controllers.PairV1Controller
             try
             {
                 await _pairService.DeletePairServiceAsync(id, cancellationToken);
-                await _cacheService.RemoveCacheAsync("all_pairs");
                 return Ok(new { success = true, data = "Pair deleted" });
 
             }
@@ -97,8 +89,7 @@ namespace WebApi.Controllers.PairV1Controller
         [HttpGet("GetPagination")]
         public async Task<IActionResult> GetPagination(int page, int size, CancellationToken cancellationToken)
         {
-            var pairs = await _cacheService.GetOrCreateCacheAsync($"page_{page}_size_{size}",
-                async () => await _pairService.GetByPagePaginationServiceAsync(page, size, cancellationToken));
+            var pairs = await _pairService.GetByPagePaginationServiceAsync(page, size, cancellationToken);
             return Ok(new { success = true, data = pairs });
         }
 
