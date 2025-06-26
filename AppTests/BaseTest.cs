@@ -19,7 +19,7 @@ namespace AppTests
 
         protected virtual void SetupDefaultMocks()
         {
-            SetupTokenProvider();
+            SetupToken();
         }
 
         protected void SetupToken()
@@ -27,12 +27,6 @@ namespace AppTests
             Mocker.GetMock<ITokenProvider>()
                   .Setup(x => x.GetToken())
                   .Returns(Token);
-        }
-        protected virtual void SetupTokenProvider()
-        {
-            Mocker.GetMock<ITokenProvider>()
-                .Setup(s => s.GetToken())
-                .Returns(Token);
         }
 
         protected T CreateService<T>() where T : class
