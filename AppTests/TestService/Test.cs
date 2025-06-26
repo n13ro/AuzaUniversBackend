@@ -26,11 +26,22 @@ namespace AppTests.TestService
         {
             SetupToken();
             var sut = CreateService<TestMyService>();
-
             var res = sut.GetToken();
 
             Assert.NotNull(res);
             Assert.Equal("user-token-456", res);
+            VerifyAll();
+        }
+
+        [Fact]
+        public void TestTwo()
+        {
+            SetupCustomToken("tok");
+            var sut = CreateService<TestMyService>();
+            var res = sut.GetToken();
+
+            Assert.NotNull(res);
+            Assert.Equal("tok", res);
             VerifyAll();
         }
     }

@@ -10,6 +10,7 @@ namespace AppTests
     {
         protected readonly AutoMocker Mocker;
         protected readonly string Token;
+        protected string CustomToken {  get; private set; }
         protected BaseTest()
         {
             Mocker = new AutoMocker();
@@ -27,6 +28,14 @@ namespace AppTests
             Mocker.GetMock<ITokenProvider>()
                   .Setup(x => x.GetToken())
                   .Returns(Token);
+        }
+
+        protected void SetupCustomToken(string customToken)
+        {
+            CustomToken = customToken;
+            Mocker.GetMock<ITokenProvider>()
+                  .Setup(x => x.GetToken())
+                  .Returns(customToken);
         }
 
         protected T CreateService<T>() where T : class
