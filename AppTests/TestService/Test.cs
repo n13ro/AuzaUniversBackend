@@ -1,56 +1,37 @@
 ﻿
-using Castle.Core.Logging;
-using Moq.AutoMock;
 
+using AppTests.Inteface;
 
 namespace AppTests.TestService
 {
-    public interface ITokenProvider
-    {
-        string GetToken();
-    } 
-
-    class TestService
+    public class TestMyService
     {
         private readonly ITokenProvider _tokenProvider;
-        public TestService(ITokenProvider tokenProvide)
+
+        public TestMyService(ITokenProvider tokenProvider)
         {
-            _tokenProvider = tokenProvide;
+            _tokenProvider = tokenProvider;
         }
 
         public string GetToken()
         {
             return _tokenProvider.GetToken();
-
         }
-
     }
-    public class Test
+    public class TestService : BaseTest
     {
 
         [Fact]
-        public void DoSomethingWithToken_ReturnsExpectedToken()
+        public void TestOne()
         {
-            // Arrange
-            var personalToken = "my-personal-token";
-            var mocker = new AutoMocker();
+            SetupTokenProvider();
+            var sut = CreateService<TestMyService>();
 
+            var res = sut.GetToken();
 
-            // Настраиваем мок для ITokenProvider
-            mocker.GetMock<ITokenProvider>()
-                  .Setup(x => x.GetToken())
-                  .Returns(personalToken);
-
-            // Автоматически создаем сервис с внедренным мок-объектом
-            var mockServ = mocker.CreateInstance<TestService>();
-
-
-            // Act
-            var result = mockServ.GetToken();
-
-
-            // Assert
-            Assert.Equal(personalToken, result);
+            Assert.NotNull(res);
+            Assert.Equal("user-token-456", res);
+            VerifyAll();
         }
     }
 }
