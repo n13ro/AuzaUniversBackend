@@ -7,33 +7,8 @@ services:
       context: .
       dockerfile: WebApi/Dockerfile
     depends_on:
-      - rabbitmq
-      - redis
       - postgres
-    networks:
-      - auza-network
-
-  rabbitmq:
-    image: rabbitmq:3-management
-    container_name: rabbitmq-auza   
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    volumes:
-      - rabbitmq_data:/var/lib/rabbitmq
-    environment:
-      - RABBITMQ_DEFAULT_USER=rmuser
-      - RABBITMQ_DEFAULT_PASS=rmpassword
-    networks:
-      - auza-network
-
-  redis:
-    image: redis:alpine
-    container_name: redis-auza
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
+      - redis
     networks:
       - auza-network
 
@@ -51,11 +26,20 @@ services:
     networks:
       - auza-network
 
+  redis:
+    image: redis:alpine
+    container_name: redis-auza
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - auza-network
+
 networks:
   auza-network:
     driver: bridge
 
 volumes:
-  rabbitmq_data:
+  postgres_data:
   redis_data:
-  postgres_data:  
