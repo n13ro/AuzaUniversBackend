@@ -24,7 +24,7 @@ namespace AppTests.TestService
         [Fact]
         public void TestOne()
         {
-            SetupTokenProvider();
+            SetupToken();
             var sut = CreateService<TestMyService>();
 
             var res = sut.GetToken();
