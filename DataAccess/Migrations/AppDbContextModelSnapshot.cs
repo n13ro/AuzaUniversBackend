@@ -126,12 +126,15 @@ namespace DataAccess.Migrations
                     b.Property<int>("Auditorium")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("DateTime")
+                    b.Property<DateTime>("EndTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 

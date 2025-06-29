@@ -6,7 +6,11 @@ namespace DataAccess.Entites
     {
         public required string Name { get; set; }
        
-        public required DateTime DateTime { get; set; }
+        public DateTime StartTime { get; set; }
+
+        public DateTime EndTime { get; set; }
+
+        //public required DateTime DateTime { get; set; }
 
         public required int Auditorium { get; set; }
 

@@ -12,7 +12,8 @@ namespace DataAccess.Repository.PairRepo
             var newPair = new Pair
             {
                 Name = pair.Name,
-                DateTime = pair.DateTime,
+                StartTime = pair.DateTime,
+                EndTime = pair.DateTime,
                 Auditorium = pair.Auditorium,
                 
             };
@@ -147,7 +148,8 @@ namespace DataAccess.Repository.PairRepo
                 await ctx.Pairs.Where(k => k.Id == pair.Id)
                     .ExecuteUpdateAsync(s => s
                         .SetProperty(c => c.Name, pair.Name)
-                        .SetProperty(c => c.DateTime, pair.DateTime)
+                        .SetProperty(c => c.StartTime, pair.DateTime)
+                        .SetProperty(c => c.EndTime, pair.DateTime)
                         .SetProperty(c => c.Auditorium, pair.Auditorium)
                         , cancellationToken);
                 await transaction.CommitAsync(cancellationToken);

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250623165254_init_db_assembly")]
-    partial class init_db_assembly
+    [Migration("20250629090710_Init_DB_tabels")]
+    partial class Init_DB_tabels
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -129,12 +129,15 @@ namespace DataAccess.Migrations
                     b.Property<int>("Auditorium")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("DateTime")
+                    b.Property<DateTime>("EndTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 

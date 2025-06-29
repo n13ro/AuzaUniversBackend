@@ -7,9 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Intefaces\**" />
+    <EmbeddedResource Remove="Intefaces\**" />
+    <None Remove="Intefaces\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Features\StudR\Commands\" />
     <Folder Include="Features\StudR\Querys\" />
-    <Folder Include="Intefaces\" />
   </ItemGroup>
 
   <ItemGroup>
