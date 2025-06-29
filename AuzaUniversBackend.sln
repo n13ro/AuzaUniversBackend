@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppTests", "AppTests\AppTes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogic", "BusinessLoggic\BusinessLogic.csproj", "{F7A205C8-22D4-4207-8ECF-064A04217218}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Redis", "Redis\Redis.csproj", "{CBED45E3-A28E-4C0A-9758-B5C4182BA8AE}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,10 +33,6 @@ Global
 		{F7A205C8-22D4-4207-8ECF-064A04217218}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7A205C8-22D4-4207-8ECF-064A04217218}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7A205C8-22D4-4207-8ECF-064A04217218}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CBED45E3-A28E-4C0A-9758-B5C4182BA8AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CBED45E3-A28E-4C0A-9758-B5C4182BA8AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CBED45E3-A28E-4C0A-9758-B5C4182BA8AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CBED45E3-A28E-4C0A-9758-B5C4182BA8AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

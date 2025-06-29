@@ -27,7 +27,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BusinessLoggic\BusinessLogic.csproj" />
-    <ProjectReference Include="..\Redis\Redis.csproj" />
   </ItemGroup>
 
 </Project>
