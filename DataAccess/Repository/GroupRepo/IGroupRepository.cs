@@ -12,7 +12,7 @@ namespace DataAccess.Repository.GroupRepo
         Task<IEnumerable<Group>> GetAllGroupRepositoryAsync(CancellationToken cancellationToken = default);
         Task<Group> GetByIdGroupRepositoryAsync(int id, CancellationToken cancellationToken = default);
         Task AddGroupRepositoryAsync(Group student, CancellationToken cancellationToken = default);
-        Task UpdateGroupRepositoryAsync(Group student, CancellationToken cancellationToken = default);
+        Task UpdateGroupRepositoryAsync(Group group, CancellationToken cancellationToken = default);
         Task DeleteGroupRepositoryAsync(int id, CancellationToken cancellationToken = default);
     }
 }

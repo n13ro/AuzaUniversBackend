@@ -12,7 +12,6 @@ namespace DataAccess.Repository.Stud
         Task AddStudentRepositoryAsync(DTOCreateStudentRepository student, CancellationToken cancellationToken = default);
         Task UpdateStudentRepositoryAsync(DTOUpdateStudentRepository student, CancellationToken cancellationToken = default);
         Task DeleteStudentRepositoryAsync(int id, CancellationToken cancellationToken = default);
-
         Task<IEnumerable<Student>> GetByPagePaginationRepositoryAsync(int page, int size, CancellationToken cancellationToken = default);
 
     }

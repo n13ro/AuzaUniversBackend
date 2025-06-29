@@ -1,4 +1,5 @@
 ﻿using DataAccess.Entites;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,9 +20,9 @@ namespace DataAccess.Repository.GroupRepo
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Group>> GetAllGroupRepositoryAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Group>> GetAllGroupRepositoryAsync(CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            return await ctx.Groups.AsNoTracking().ToListAsync(cancellationToken);
         }
 
         public Task<Group> GetByIdGroupRepositoryAsync(int id, CancellationToken cancellationToken = default)
