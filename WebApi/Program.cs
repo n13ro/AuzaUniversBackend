@@ -1,7 +1,6 @@
 using BusinessLogic;
 using BusinessLogic.Middleware;
 using DataAccess;
-using Redis;
 using WebApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,7 +10,6 @@ builder.Services.AddMemoryCache();
 // Add castom services to the container.
 builder.Services.AddDataAccess();
 builder.Services.AddBusinessLogic();
-//builder.Services.AddRedis();
 
 
 //-----------

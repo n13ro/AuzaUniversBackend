@@ -1,7 +1,6 @@
 ﻿using BusinessLogic.DTOs.DTOPair;
 using BusinessLogic.Services.PairService;
 using Microsoft.AspNetCore.Mvc;
-using Redis;
 
 namespace WebApi.Controllers.PairV1Controller
 {
@@ -9,7 +8,6 @@ namespace WebApi.Controllers.PairV1Controller
     [ApiController]
     public class PairController : ControllerBase
     {
-        //private readonly RedisCacheService _cacheService;
         private readonly IPairService _pairService;
 
         public PairController(IPairService pairService)
