@@ -15,6 +15,8 @@
   <ItemGroup>
     <Folder Include="Features\StudR\Commands\" />
     <Folder Include="Features\StudR\Querys\" />
+    <Folder Include="Commands\" />
+    <Folder Include="Queries\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
+    <ProjectReference Include="..\DataAccess\Domain.csproj" />
   </ItemGroup>
 
 </Project>

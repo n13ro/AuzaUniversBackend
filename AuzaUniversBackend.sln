@@ -5,11 +5,11 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{51BE9C8D-5408-4C6A-8F83-9E8BB3697CCD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{5D34B2F9-0B88-4028-9B7B-B6EFAD9DB2E6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "DataAccess\Domain.csproj", "{5D34B2F9-0B88-4028-9B7B-B6EFAD9DB2E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppTests", "AppTests\AppTests.csproj", "{B181D648-2751-4E6A-A8F5-D96BF958EC70}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "AppTests\Tests.csproj", "{B181D648-2751-4E6A-A8F5-D96BF958EC70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogic", "BusinessLoggic\BusinessLogic.csproj", "{F7A205C8-22D4-4207-8ECF-064A04217218}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "BusinessLoggic\Application.csproj", "{F7A205C8-22D4-4207-8ECF-064A04217218}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
