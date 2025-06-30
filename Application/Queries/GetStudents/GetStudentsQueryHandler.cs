@@ -1,6 +1,6 @@
 ﻿using Application.DTOs;
 using Domain.Entities;
-using Domain.Interfaces;
+using Domain.Repositories;
 using MediatR;
 
 

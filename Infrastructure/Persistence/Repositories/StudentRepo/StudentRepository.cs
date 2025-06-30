@@ -1,12 +1,8 @@
 ﻿using Domain.Entities;
-using Domain.Interfaces;
+using Domain.Repositories;
 using Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Infrastructure.Persistence.Repositories.StudentRepo
 {

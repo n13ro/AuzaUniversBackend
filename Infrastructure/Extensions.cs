@@ -1,4 +1,4 @@
-﻿using Domain.Interfaces;
+﻿using Domain.Repositories;
 using Infrastructure.Persistence.Context;
 using Infrastructure.Persistence.Repositories;
 using Infrastructure.Persistence.Repositories.StudentRepo;
