@@ -1,0 +1,110 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  DOTNET_VERSION: '8.0.x'
+
+jobs:
+  # CI - Continuous Integration
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: 12345
+          POSTGRES_DB: AuzaUniversDb
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Restore dependencies
+      run: dotnet restore UniversSystem.sln
+
+    - name: Build
+      run: dotnet build UniversSystem.sln --no-restore --configuration Release
+
+    - name: Run tests
+      run: dotnet test UniversSystem.sln --no-build --verbosity normal --configuration Release
+
+    - name: Run EF migrations
+      run: dotnet ef database update --project Infrastructure/Infrastructure.csproj --startup-project UniversSystem/UniversSystem.csproj
+      env:
+        ConnectionStrings__DefaultConnection: Host=localhost;Port=5432;Database=AuzaUniversDb;Username=postgres;Password=12345
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results
+        path: |
+          **/TestResults/
+          **/coverage/
+
+  # CD - Continuous Deployment (только для master)
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Build for production
+      run: dotnet publish UniversSystem/UniversSystem.csproj -c Release -o ./publish
+
+    - name: Deploy to Render
+      uses: johnbeynon/render-deploy-action@v0.0.9
+      with:
+        service-id: ${{ secrets.RENDER_SERVICE_ID }}
+        api-key: ${{ secrets.RENDER_API_KEY }}
+
+    # Альтернатива: деплой на Railway
+    # - name: Deploy to Railway
+    #   uses: railway/deploy@v1.0.0
+    #   with:
+    #     railway_token: ${{ secrets.RAILWAY_TOKEN }}
+
+    # Альтернатива: деплой на VPS
+    # - name: Deploy to VPS
+    #   uses: appleboy/ssh-action@v0.1.5
+    #   with:
+    #     host: ${{ secrets.HOST }}
+    #     username: ${{ secrets.USERNAME }}
+    #     key: ${{ secrets.SSH_KEY }}
+    #     script: |
+    #       cd /path/to/your/app
+    #       git pull origin main
+    #       dotnet restore
+    #       dotnet build -c Release
+    #       dotnet ef database update
+    #       sudo systemctl restart your-app
