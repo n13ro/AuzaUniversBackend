@@ -3,7 +3,6 @@ using Domain.Entities;
 using Domain.Repositories;
 using MediatR;
 
-
 namespace Application.Queries.GetStudents
 {
     public class GetStudentsQueryHandler : IRequestHandler<GetStudentsQuery, IEnumerable<StudentDto>>

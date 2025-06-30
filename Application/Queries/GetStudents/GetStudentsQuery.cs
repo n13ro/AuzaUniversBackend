@@ -4,7 +4,5 @@ using MediatR;
 
 namespace Application.Queries.GetStudents
 {
-    public class GetStudentsQuery : IRequest<IEnumerable<StudentDto>>
-    {
-    }
+    public record GetStudentsQuery : IRequest<IEnumerable<StudentDto>> { }
 }
