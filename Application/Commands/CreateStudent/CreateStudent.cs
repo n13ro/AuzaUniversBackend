@@ -13,5 +13,7 @@ namespace Application.Commands.CreateStudent
         public string Email { get; set; }
         public string Phone { get; set; }
         public int Level { get; set; } = 1;
+
+        public int GroupId { get; set; }
     }
 }

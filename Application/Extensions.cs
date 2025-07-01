@@ -1,12 +1,7 @@
-﻿using Application.Commands.CreateStudent;
-using Domain;
-using Domain.Interfaces;
+﻿using Application.Commands.CreateGroup;
+using Application.Commands.CreateStudent;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Application
 {
@@ -16,7 +11,9 @@ namespace Application
         {
 
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<CreateStudentCommand>());
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<CreateGroupCommand>());
 
+           
             return services;
         }
     }

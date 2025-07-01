@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Application.Queries.GetStudents
 {
-    public class GetStudentsQueryHandler : IRequestHandler<GetStudentsQuery, IEnumerable<StudentDto>>
+    public class GetStudentsQueryHandler : IRequestHandler<GetStudentsQuery, IEnumerable<StudentRequest>>
     {
         private readonly IRepository<Student> _studentRepository;
 
@@ -14,11 +14,11 @@ namespace Application.Queries.GetStudents
             _studentRepository = studentRepository;
         }
 
-        public async Task<IEnumerable<StudentDto>> Handle(GetStudentsQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<StudentRequest>> Handle(GetStudentsQuery request, CancellationToken cancellationToken)
         {
             var students = await _studentRepository.GetAllAsync();
 
-            return students.Select(s => new StudentDto
+            return students.Select(s => new StudentRequest
             {
                 Id = s.Id,
                 Name = s.Name,

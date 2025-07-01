@@ -24,6 +24,7 @@ namespace Infrastructure.Persistence.Configurations
                 .WithMany(g => g.Students)
                 .HasForeignKey(k => k.MyGroupId);
 
+            // Student - Coin (Many-to-Many)
             builder.HasMany(s => s.Coins)
                 .WithMany(c => c.Students)
                 .UsingEntity(j => j.ToTable("StudentCoins"));

@@ -18,24 +18,19 @@ namespace UniversSystem.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<StudentDto>>> GetStudents()
+        public async Task<ActionResult<IEnumerable<StudentRequest>>> GetStudents()
         {
             var query = new GetStudentsQuery();
             var students = await _mediator.Send(query);
 
             return Ok(students);
         }
-        [HttpGet("{id}")]
-        public async Task<ActionResult<StudentDto>> GetStudent(int id)
-        {
-            // Пока просто заглушка
-            return NotFound();
-        }
+        
         [HttpPost]
-        public async Task<ActionResult<int>> CreateStudent(CreateStudentCommand command)
+        public async Task<ActionResult> CreateStudent(CreateStudentCommand command)
         {
             var studentId = await _mediator.Send(command);
-            return CreatedAtAction(nameof(GetStudent), new { id = studentId }, studentId);
+            return Ok(studentId);
         }
     }
 }

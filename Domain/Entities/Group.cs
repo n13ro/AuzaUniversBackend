@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class    Group : BaseEntity
+    public class Group : BaseEntity
     {
         public string Name { get; private set; }
         private List<Student> _students { get; set; } = new();
         private List<Mentor> _mentors { get; set; } = new();
 
-        public IReadOnlyCollection<Student> Students => _students.AsReadOnly();
-        public IReadOnlyCollection<Mentor> Mentors => _mentors.AsReadOnly();
+        public ICollection<Student> Students => _students;
+        public ICollection<Mentor> Mentors => _mentors;
 
         private Group() { }
 
@@ -23,6 +23,7 @@ namespace Domain.Entities
             if(string.IsNullOrEmpty(name)) throw new ArgumentNullException("name null");
 
             Name = name;
+            SetUpdate();
         }
 
         public void AddStudent(Student student)
