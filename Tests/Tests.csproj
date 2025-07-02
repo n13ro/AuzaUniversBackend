@@ -22,8 +22,11 @@
 
   <ItemGroup>
     <Folder Include="Integration\" />
-    <Folder Include="Unit\" />
     <Folder Include="E2E\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
 </Project>

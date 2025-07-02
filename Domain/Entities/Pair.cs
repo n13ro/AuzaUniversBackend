@@ -17,10 +17,8 @@ namespace Domain.Entities
         public int GroupId { get; set; }
         public Group? Group { get; set; }
 
-        //private readonly List<Student> _students = new();
         private readonly List<Mentor> _mentors = new();
 
-        //public IReadOnlyCollection<Student> Students => _students.AsReadOnly();
         public IReadOnlyCollection<Mentor> Mentors => _mentors.AsReadOnly();
 
         private Pair() { }

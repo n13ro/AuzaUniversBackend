@@ -11,13 +11,13 @@ namespace Domain.Entities
         public string LastName { get; private set; }
         public string Email { get; private set; }
         public string Phone { get; private set; }
+
         [Range(1, 100)]
-        public int Level { get; set; } = 1;
+        public int Level { get; private set; }
+        [Range(1, 1000)]
+        public int XP { get; private set; }
 
-        //private readonly List<Pair> _myPairs = new();
         private readonly List<Coin> _coins = new();
-
-        //public IReadOnlyCollection<Pair>? MyPairs => _myPairs.AsReadOnly();
         public IReadOnlyCollection<Coin>? Coins => _coins.AsReadOnly();
 
         public int MyGroupId { get; set; }
@@ -36,7 +36,7 @@ namespace Domain.Entities
         }
         public void EnrollInGroup(Group group)
         {
-            //if(group == null) throw new ArgumentNullException("group null");
+            if(group == null) throw new ArgumentNullException("group null");
 
             MyGroup = group;
             MyGroupId = group.Id;
@@ -45,15 +45,26 @@ namespace Domain.Entities
 
         public void AddCoin(Coin coin)
         {
-            //if (coin == null) throw new ArgumentNullException("coin null");
+            if (coin == null) throw new ArgumentNullException("coin null");
 
             _coins.Add(coin);
+            SetUpdate();
+        }
+        
+        public void AddXP(int amount)
+        {
+            XP += amount;
+            while (XP >= 1000)
+            {
+                XP -= 1000;
+                LevelUp();
+            }
             SetUpdate();
         }
 
         public void LevelUp()
         {
-            //
+            Level += 1;
             SetUpdate();
         }
     }
