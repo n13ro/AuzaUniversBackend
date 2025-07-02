@@ -14,10 +14,10 @@ namespace Domain.Entities
         [Range(1, 100)]
         public int Level { get; set; } = 1;
 
-        private readonly List<Pair> _myPairs = new();
+        //private readonly List<Pair> _myPairs = new();
         private readonly List<Coin> _coins = new();
 
-        public IReadOnlyCollection<Pair>? MyPairs => _myPairs.AsReadOnly();
+        //public IReadOnlyCollection<Pair>? MyPairs => _myPairs.AsReadOnly();
         public IReadOnlyCollection<Coin>? Coins => _coins.AsReadOnly();
 
         public int MyGroupId { get; set; }

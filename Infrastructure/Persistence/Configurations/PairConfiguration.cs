@@ -9,7 +9,9 @@ namespace Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Pair> builder)
         {
-            //
+            builder.HasOne(p => p.Group)
+                   .WithMany(g => g.Pairs)
+                   .HasForeignKey(p => p.GroupId);
 
             builder.HasIndex(p => p.Id);
             builder.Property(p => p.Id).IsConcurrencyToken();

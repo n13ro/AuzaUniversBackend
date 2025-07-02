@@ -10,9 +10,12 @@ namespace Domain.Entities
     public class Group : BaseEntity
     {
         public string Name { get; private set; }
+
         private List<Student> _students { get; set; } = new();
         private List<Mentor> _mentors { get; set; } = new();
+        private List<Pair> _pairs { get; set; } = new();
 
+        public ICollection<Pair> Pairs => _pairs;
         public ICollection<Student> Students => _students;
         public ICollection<Mentor> Mentors => _mentors;
 

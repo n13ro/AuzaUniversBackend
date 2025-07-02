@@ -10,14 +10,14 @@ namespace Infrastructure.Persistence.Configurations
         public void Configure(EntityTypeBuilder<Student> builder)
         {
             // Student - Pair (Many-to-Many)
-            builder.HasMany(s => s.MyPairs)
-                .WithMany(p => p.Students)
-                .UsingEntity(j => j.ToTable("StudentPairs"));
+            //builder.HasMany(s => s.MyPairs)
+            //    .WithMany(p => p.Students)
+            //    .UsingEntity(j => j.ToTable("StudentPairs"));
 
-            // Student - Pair (Many-to-Many)
-            builder.HasMany(s => s.MyPairs)
-                .WithMany(p => p.Students)
-                .UsingEntity(j => j.ToTable("StudentPairs"));
+            //// Student - Pair (Many-to-Many)
+            //builder.HasMany(s => s.MyPairs)
+            //    .WithMany(p => p.Students)
+            //    .UsingEntity(j => j.ToTable("StudentPairs"));
 
             // Student - Group (One-to-Many)
             builder.HasOne(s => s.MyGroup)

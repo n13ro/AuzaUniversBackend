@@ -15,7 +15,10 @@ namespace Infrastructure.Persistence.Configurations
             builder.HasMany(g => g.Mentors)
                    .WithMany(m => m.Groups)
                    .UsingEntity(j => j.ToTable("MentorGroups"));
-           
+
+            builder.HasMany(g => g.Pairs)
+                   .WithOne(p => p.Group)
+                   .HasForeignKey(p => p.GroupId);
 
             builder.HasIndex(g => g.Id).IsUnique();
             builder.Property(c => c.Id).IsConcurrencyToken();

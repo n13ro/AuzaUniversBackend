@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Init_DB_tables : Migration
+    public partial class init_db_fixed : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -62,24 +62,6 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Pairs",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    StartTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    EndTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Auditorium = table.Column<int>(type: "integer", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Pairs", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Students",
                 columns: table => new
                 {
@@ -131,27 +113,34 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MentorPairs",
+                name: "Pairs",
                 columns: table => new
                 {
-                    MentorsId = table.Column<int>(type: "integer", nullable: false),
-                    MyPairsId = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    StartTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    EndTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Auditorium = table.Column<int>(type: "integer", nullable: false),
+                    GroupId = table.Column<int>(type: "integer", nullable: false),
+                    StudentId = table.Column<int>(type: "integer", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MentorPairs", x => new { x.MentorsId, x.MyPairsId });
+                    table.PrimaryKey("PK_Pairs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MentorPairs_Mentors_MentorsId",
-                        column: x => x.MentorsId,
-                        principalTable: "Mentors",
+                        name: "FK_Pairs_Groups_GroupId",
+                        column: x => x.GroupId,
+                        principalTable: "Groups",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_MentorPairs_Pairs_MyPairsId",
-                        column: x => x.MyPairsId,
-                        principalTable: "Pairs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_Pairs_Students_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Students",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -179,25 +168,25 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "StudentPairs",
+                name: "MentorPairs",
                 columns: table => new
                 {
-                    MyPairsId = table.Column<int>(type: "integer", nullable: false),
-                    StudentsId = table.Column<int>(type: "integer", nullable: false)
+                    MentorsId = table.Column<int>(type: "integer", nullable: false),
+                    MyPairsId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_StudentPairs", x => new { x.MyPairsId, x.StudentsId });
+                    table.PrimaryKey("PK_MentorPairs", x => new { x.MentorsId, x.MyPairsId });
                     table.ForeignKey(
-                        name: "FK_StudentPairs_Pairs_MyPairsId",
-                        column: x => x.MyPairsId,
-                        principalTable: "Pairs",
+                        name: "FK_MentorPairs_Mentors_MentorsId",
+                        column: x => x.MentorsId,
+                        principalTable: "Mentors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_StudentPairs_Students_StudentsId",
-                        column: x => x.StudentsId,
-                        principalTable: "Students",
+                        name: "FK_MentorPairs_Pairs_MyPairsId",
+                        column: x => x.MyPairsId,
+                        principalTable: "Pairs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -230,18 +219,23 @@ namespace Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Pairs_GroupId",
+                table: "Pairs",
+                column: "GroupId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Pairs_Id",
                 table: "Pairs",
                 column: "Id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_StudentCoins_StudentsId",
-                table: "StudentCoins",
-                column: "StudentsId");
+                name: "IX_Pairs_StudentId",
+                table: "Pairs",
+                column: "StudentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_StudentPairs_StudentsId",
-                table: "StudentPairs",
+                name: "IX_StudentCoins_StudentsId",
+                table: "StudentCoins",
                 column: "StudentsId");
 
             migrationBuilder.CreateIndex(
@@ -269,16 +263,13 @@ namespace Infrastructure.Migrations
                 name: "StudentCoins");
 
             migrationBuilder.DropTable(
-                name: "StudentPairs");
-
-            migrationBuilder.DropTable(
                 name: "Mentors");
 
             migrationBuilder.DropTable(
-                name: "Coins");
+                name: "Pairs");
 
             migrationBuilder.DropTable(
-                name: "Pairs");
+                name: "Coins");
 
             migrationBuilder.DropTable(
                 name: "Students");

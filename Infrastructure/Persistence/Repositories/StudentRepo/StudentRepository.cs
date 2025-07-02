@@ -30,7 +30,7 @@ namespace Infrastructure.Persistence.Repositories.StudentRepo
         {
             return await _dbSet.Where(s => s.Id == id)
                 .Include(s => s.MyGroup)
-                .Include(s => s.MyPairs)
+                //.Include(s => s.MyPairs)
                 .Include(s => s.Coins)
                 .FirstOrDefaultAsync(s => s.Id == id);
         }

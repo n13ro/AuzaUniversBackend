@@ -14,10 +14,13 @@ namespace Domain.Entities
         public DateTime EndTime { get; private set; }
         public int Auditorium { get; private set; }
 
-        private readonly List<Student> _students = new();
+        public int GroupId { get; set; }
+        public Group? Group { get; set; }
+
+        //private readonly List<Student> _students = new();
         private readonly List<Mentor> _mentors = new();
 
-        public IReadOnlyCollection<Student> Students => _students.AsReadOnly();
+        //public IReadOnlyCollection<Student> Students => _students.AsReadOnly();
         public IReadOnlyCollection<Mentor> Mentors => _mentors.AsReadOnly();
 
         private Pair() { }
@@ -44,18 +47,25 @@ namespace Domain.Entities
 
         }
         
-        public void AddStudent(Student student)
+        //public void AddStudent(Student student)
+        //{
+        //    _students.Add(student);
+        //    SetUpdate();
+        //}
+        //public void RemoveStudent(Student student)
+        //{
+        //    if (_students.Remove(student))
+        //    {
+        //        SetUpdate();
+        //    }
+        //}
+        public void EnrollGroup(Group group)
         {
-            _students.Add(student);
+            GroupId = group.Id;
+            Group = group;
             SetUpdate();
         }
-        public void RemoveStudent(Student student)
-        {
-            if (_students.Remove(student))
-            {
-                SetUpdate();
-            }
-        }
+
         public void AddMentor(Mentor mentor)
         {
             _mentors.Add(mentor);

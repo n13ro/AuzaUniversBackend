@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250629204928_Init_DB_tables")]
-    partial class Init_DB_tables
+    [Migration("20250702082358_init_db_fixed")]
+    partial class init_db_fixed
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -153,6 +153,9 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("GroupId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -160,12 +163,19 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int?>("StudentId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GroupId");
+
                     b.HasIndex("Id");
+
+                    b.HasIndex("StudentId");
 
                     b.ToTable("Pairs");
                 });
@@ -251,21 +261,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("MentorPairs", (string)null);
                 });
 
-            modelBuilder.Entity("PairStudent", b =>
-                {
-                    b.Property<int>("MyPairsId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("StudentsId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("MyPairsId", "StudentsId");
-
-                    b.HasIndex("StudentsId");
-
-                    b.ToTable("StudentPairs", (string)null);
-                });
-
             modelBuilder.Entity("CoinStudent", b =>
                 {
                     b.HasOne("Domain.Entities.Coin", null)
@@ -279,6 +274,21 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("StudentsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.Pair", b =>
+                {
+                    b.HasOne("Domain.Entities.Group", "Group")
+                        .WithMany("Pairs")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Student", null)
+                        .WithMany("MyPairs")
+                        .HasForeignKey("StudentId");
+
+                    b.Navigation("Group");
                 });
 
             modelBuilder.Entity("Domain.Entities.Student", b =>
@@ -322,24 +332,16 @@ namespace Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PairStudent", b =>
-                {
-                    b.HasOne("Domain.Entities.Pair", null)
-                        .WithMany()
-                        .HasForeignKey("MyPairsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Student", null)
-                        .WithMany()
-                        .HasForeignKey("StudentsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Domain.Entities.Group", b =>
                 {
+                    b.Navigation("Pairs");
+
                     b.Navigation("Students");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Student", b =>
+                {
+                    b.Navigation("MyPairs");
                 });
 #pragma warning restore 612, 618
         }
