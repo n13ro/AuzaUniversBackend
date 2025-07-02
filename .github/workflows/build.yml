@@ -24,5 +24,11 @@ jobs:
     - name: Build
       run: dotnet build UniversSystem/UniversSystem.csproj --no-restore
 
+    - name: Restore test project
+      run: dotnet restore Tests/Tests.csproj
+
+    - name: Build test project
+      run: dotnet build Tests/Tests.csproj --no-restore
+
     - name: Run tests
       run: dotnet test Tests/Tests.csproj --no-build --verbosity normal
