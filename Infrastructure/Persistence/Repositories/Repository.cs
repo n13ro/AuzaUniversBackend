@@ -84,7 +84,7 @@ namespace Infrastructure.Persistence.Repositories
             {
                 _dbSet.Update(entity);
                 await _ctx.SaveChangesAsync();
-
+                await transaction.CommitAsync();
             }
             catch (Exception ex)
             {
