@@ -23,20 +23,48 @@ namespace Infrastructure.Persistence.Repositories
 
         public async Task<T> AddAsync(T entity)
         {
-            await _dbSet.AddAsync(entity);
-            await _ctx.SaveChangesAsync();
-            return entity;
+            await using var transaction = await _ctx.Database.BeginTransactionAsync();
+            try
+            {
+                await _dbSet.AddAsync(entity);
+                await _ctx.SaveChangesAsync();
+                await transaction.CommitAsync();
+                return entity;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{ex.Message}");
+            }
 
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            return _dbSet.Where(s => s.Id == id).ExecuteDeleteAsync();
+            await using var transaction = await _ctx.Database.BeginTransactionAsync();
+            try
+            {
+                await _dbSet.Where(s => s.Id == id).ExecuteDeleteAsync();
+                await transaction.CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{ex.Message}");
+            }
         }
 
         public async Task<bool> ExistsAsync(int id)
         {
-            return await _dbSet.AnyAsync(s => s.Id == id);
+            await using var transaction = await _ctx.Database.BeginTransactionAsync();
+            try
+            {
+                await _dbSet.AnyAsync(s => s.Id == id);
+                await transaction.CommitAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{ex.Message}");
+            }
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()
@@ -51,8 +79,17 @@ namespace Infrastructure.Persistence.Repositories
 
         public async Task UpdateAsync(T entity)
         {
-            _dbSet.Update(entity);
-            await _ctx.SaveChangesAsync();
+            await using var transaction = await _ctx.Database.BeginTransactionAsync();
+            try
+            {
+                _dbSet.Update(entity);
+                await _ctx.SaveChangesAsync();
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{ex.Message}");
+            }
         }
     }
 }

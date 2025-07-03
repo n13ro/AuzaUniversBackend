@@ -45,18 +45,6 @@ namespace Domain.Entities
 
         }
         
-        //public void AddStudent(Student student)
-        //{
-        //    _students.Add(student);
-        //    SetUpdate();
-        //}
-        //public void RemoveStudent(Student student)
-        //{
-        //    if (_students.Remove(student))
-        //    {
-        //        SetUpdate();
-        //    }
-        //}
         public void EnrollGroup(Group group)
         {
             GroupId = group.Id;

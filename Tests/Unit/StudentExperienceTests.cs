@@ -18,16 +18,18 @@ namespace Tests.Unit
         }
 
         [Fact]
-        public void AddXP_LevelUp()
+        public void AddXP_LevelUp1()
         {
             var student = new Student("Test", "T", "S", "test@mail.com", "123", 1);
             student.AddXP(1200);
             Assert.Equal(200, student.XP);
             Assert.Equal(2, student.Level);
+            student.AddXP(800);
+            Assert.Equal(3, student.Level);
         }
 
         [Fact]
-        public void AddXP_LevelUP()
+        public void AddXP_LevelUP2()
         {
             var student = new Student("Test", "T", "S", "test@mail.com", "123", 1);
             student.AddXP(999);
