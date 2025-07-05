@@ -10,5 +10,7 @@ namespace Application.Queries.GetGroups
 {
     public record GetGroupsQuery : IRequest<IEnumerable<GroupRequest>>
     {
+        public int Page { get; init; } = 1;
+        public int Size { get; init; } = 20;
     }
 }

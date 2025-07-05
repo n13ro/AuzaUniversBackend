@@ -18,9 +18,9 @@ namespace UniversSystem.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<StudentRequest>>> GetStudents()
+        public async Task<ActionResult<IEnumerable<StudentRequest>>> GetStudents([FromBody] int page = 1, [FromBody] int size = 20)
         {
-            var query = new GetStudentsQuery();
+            var query = new GetStudentsQuery { Page = page, Size = size };
             var students = await _mediator.Send(query);
 
             return Ok(students);

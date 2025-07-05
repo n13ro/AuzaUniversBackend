@@ -20,9 +20,9 @@ namespace UniversSystem.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GroupRequest>>> GetGroups()
+        public async Task<ActionResult<IEnumerable<GroupRequest>>> GetGroups([FromQuery] int page = 1, [FromQuery] int size = 20)
         {
-            var query = new GetGroupsQuery();
+            var query = new GetGroupsQuery { Page = page, Size = size };
             var groups = await _mediator.Send(query);
 
             return Ok(groups);

@@ -16,7 +16,7 @@ namespace Application.Queries.GetStudents
 
         public async Task<IEnumerable<StudentRequest>> Handle(GetStudentsQuery request, CancellationToken cancellationToken)
         {
-            var students = await _studentRepository.GetAllAsync();
+            var students = await _studentRepository.GetAllAsync(request.Page, request.Size);
 
             return students.Select(s => new StudentRequest
             {

@@ -60,9 +60,9 @@ namespace Infrastructure.Persistence.Repositories
             return await _dbSet.AnyAsync(s => s.Id == id);
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public async Task<IEnumerable<T>> GetAllAsync(int page = 1, int size = 20)
         {
-            return await _dbSet.AsNoTracking().ToListAsync();
+            return await _dbSet.AsNoTracking().Skip((page - 1) * size).Take(size).ToListAsync();
         }
 
         public async Task<T?> GetByIdAsync(int id)
