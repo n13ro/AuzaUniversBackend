@@ -34,6 +34,7 @@ namespace Infrastructure.Persistence.Repositories
             }
             catch (Exception ex)
             {
+                await transaction.RollbackAsync();
                 throw new ValidationException($"{ex.Message}, adding error");
             }
 
@@ -49,23 +50,14 @@ namespace Infrastructure.Persistence.Repositories
             }
             catch (Exception ex)
             {
+                await transaction.RollbackAsync();
                 throw new ValidationException($"{ex.Message}, deletion error");
             }
         }
 
         public async Task<bool> ExistsAsync(int id)
         {
-            await using var transaction = await _ctx.Database.BeginTransactionAsync();
-            try
-            {
-                await _dbSet.AnyAsync(s => s.Id == id);
-                await transaction.CommitAsync();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                throw new ValidationException($"{ex.Message}");
-            }
+            return await _dbSet.AnyAsync(s => s.Id == id);
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()
@@ -89,6 +81,7 @@ namespace Infrastructure.Persistence.Repositories
             }
             catch (Exception ex)
             {
+                await transaction.RollbackAsync();
                 throw new ValidationException($"{ex.Message}, update error");
             }
         }
