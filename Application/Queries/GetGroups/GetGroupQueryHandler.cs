@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Application.Queries.GetGroups
 {
-    public class GetGroupQueryHandler : IRequestHandler<GetGroupsQuery, IEnumerable<GroupRequest>>
+    public class GetGroupQueryHandler : IRequestHandler<GetGroupsQuery, PaginationResponse<GroupRequest>>
     {
         private readonly IRepository<Group> _groupRepository;
 
@@ -15,13 +15,19 @@ namespace Application.Queries.GetGroups
             _groupRepository = groupRepository;
         }
 
-        public async Task<IEnumerable<GroupRequest>> Handle(GetGroupsQuery request, CancellationToken cancellationToken)
+        public async Task<PaginationResponse<GroupRequest>> Handle(GetGroupsQuery request, CancellationToken cancellationToken)
         {
-            var groups = await _groupRepository.GetAllAsync(request.Page, request.Size);
-            return groups.Select(s => new GroupRequest
+            var groups = await _groupRepository.GetAllAsync(request.Page, request.Take);
+
+            return new PaginationResponse<GroupRequest>
             {
-                Name = s.Name,
-            });
+                Items = groups.Select(s => new GroupRequest
+                {
+                    Name = s.Name,
+                }),
+                Page = request.Page,
+                PageSize = request.PageSize,
+            };
         }
     }
 }

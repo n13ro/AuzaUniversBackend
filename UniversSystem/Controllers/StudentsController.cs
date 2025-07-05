@@ -20,7 +20,7 @@ namespace UniversSystem.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<StudentRequest>>> GetStudents([FromQuery] int page = 1, [FromQuery] int size = 20)
         {
-            var query = new GetStudentsQuery { Page = page, Size = size };
+            var query = new GetStudentsQuery { Page = page, PageSize = size };
             var students = await _mediator.Send(query);
 
             return Ok(students);

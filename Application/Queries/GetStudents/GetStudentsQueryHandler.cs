@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Application.Queries.GetStudents
 {
-    public class GetStudentsQueryHandler : IRequestHandler<GetStudentsQuery, IEnumerable<StudentRequest>>
+    public class GetStudentsQueryHandler : IRequestHandler<GetStudentsQuery, PaginationResponse<StudentRequest>>
     {
         private readonly IRepository<Student> _studentRepository;
 
@@ -14,20 +14,28 @@ namespace Application.Queries.GetStudents
             _studentRepository = studentRepository;
         }
 
-        public async Task<IEnumerable<StudentRequest>> Handle(GetStudentsQuery request, CancellationToken cancellationToken)
+        public async Task<PaginationResponse<StudentRequest>> Handle(GetStudentsQuery request, CancellationToken cancellationToken)
         {
-            var students = await _studentRepository.GetAllAsync(request.Page, request.Size);
+            
+            var students = await _studentRepository.GetAllAsync(request.Page, request.PageSize);
 
-            return students.Select(s => new StudentRequest
+            return new PaginationResponse<StudentRequest>
             {
-                Id = s.Id,
-                Name = s.Name,
-                FirstName = s.FirstName,
-                LastName = s.LastName,
-                Email = s.Email,
-                Phone = s.Phone,
-                Level = s.Level
-            });
+                Items = students.Select(s => new StudentRequest
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    FirstName = s.FirstName,
+                    LastName = s.LastName,
+                    Email = s.Email,
+                    Phone = s.Phone,
+                    Level = s.Level
+                }),
+                Page = request.Page,
+                PageSize = request.PageSize,
+            };
+
+
         }
     }
 }
