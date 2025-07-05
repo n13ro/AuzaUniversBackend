@@ -1,7 +1,10 @@
 ﻿using Domain.Common;
+using Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,12 +28,28 @@ namespace Domain.Entities
 
         public Pair(string name, DateTime startTime, DateTime endTime, int auditorium)
         {
+            ValidatePairData(name, startTime, endTime, auditorium);
             Name = name;
             StartTime = startTime;
             EndTime = endTime;
             Auditorium = auditorium;
+            SetUpdate();
         }
+        private void ValidatePairData(string name, DateTime startTime, DateTime endTime, int auditorium)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ValidationException("Pair name cannot be empty");
 
+            if (startTime >= endTime)
+                throw new ValidationException("Start time must be before end time");
+
+            if (startTime <= DateTime.UtcNow)
+                throw new ValidationException("Start time must be in the future");
+
+            if (auditorium <= 0)
+                throw new ValidationException("Auditorium number must be positive");
+
+        }
         public void Start()
         {
 

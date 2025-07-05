@@ -30,6 +30,7 @@ namespace Domain.Entities
             LastName = lastName;
             Email = email;
             Phone = phone;
+            SetUpdate();
         }
 
         public void AssignToGroup(Group group)

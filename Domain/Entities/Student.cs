@@ -22,18 +22,50 @@ namespace Domain.Entities
 
         public int MyGroupId { get; set; }
         public Group? MyGroup { get; set; }
-
+        
         private Student() { }
 
         public Student(string name, string firstName, string lastName, string email, string phone, int level)
         {
+            ValidateStudentData(name, firstName, lastName, email, phone, level);
             Name = name;
             FirstName = firstName;
             LastName = lastName;
             Email = email;
             Phone = phone;
             Level = level;
+            XP = 0;
+            SetUpdate();
         }
+
+        private void ValidateStudentData(string name, string firstName, string lastName, string email, string phone, int level)
+        {
+            if(string.IsNullOrWhiteSpace(name))
+            {
+                throw new ValidationException("Name cannot be empty");
+            }
+            if (string.IsNullOrWhiteSpace(firstName))
+            {
+                throw new ValidationException("FirstName cannot be empty");
+            }
+            if (string.IsNullOrWhiteSpace(lastName))
+            {
+                throw new ValidationException("LastName cannot be empty");
+            }
+            if (string.IsNullOrWhiteSpace(email) || !email.Contains("@"))
+            {
+                throw new ValidationException("Email cannot be empty");
+            }
+            if (string.IsNullOrWhiteSpace(phone))
+            {
+                throw new ValidationException("Phone cannot be empty");
+            }
+            if (level < 1 || level > 100 )
+            {
+                throw new ValidationException("Level between 1 and 100");
+            }
+        }
+
         public void EnrollInGroup(Group group)
         {
             if(group == null) throw new ArgumentNullException("group null");
