@@ -1,4 +1,5 @@
 ﻿using Domain.Common;
+using Domain.Exceptions;
 using Domain.Repositories;
 using Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
@@ -33,7 +34,7 @@ namespace Infrastructure.Persistence.Repositories
             }
             catch (Exception ex)
             {
-                throw new Exception($"{ex.Message}");
+                throw new ValidationException($"{ex.Message}, adding error");
             }
 
         }
@@ -48,7 +49,7 @@ namespace Infrastructure.Persistence.Repositories
             }
             catch (Exception ex)
             {
-                throw new Exception($"{ex.Message}");
+                throw new ValidationException($"{ex.Message}, deletion error");
             }
         }
 
@@ -63,7 +64,7 @@ namespace Infrastructure.Persistence.Repositories
             }
             catch (Exception ex)
             {
-                throw new Exception($"{ex.Message}");
+                throw new ValidationException($"{ex.Message}");
             }
         }
 
@@ -88,7 +89,7 @@ namespace Infrastructure.Persistence.Repositories
             }
             catch (Exception ex)
             {
-                throw new Exception($"{ex.Message}");
+                throw new ValidationException($"{ex.Message}, update error");
             }
         }
     }

@@ -52,7 +52,7 @@ namespace Domain.Entities
             {
                 throw new ValidationException("LastName cannot be empty");
             }
-            if (string.IsNullOrWhiteSpace(email) || !email.Contains("@"))
+            if (string.IsNullOrWhiteSpace(email) || !email.Contains('@'))
             {
                 throw new ValidationException("Email cannot be empty");
             }
