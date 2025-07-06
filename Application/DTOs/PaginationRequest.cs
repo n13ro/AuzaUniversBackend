@@ -13,6 +13,8 @@ namespace Application.DTOs
 
         public int Skip => (Page - 1) * PageSize;
         public int Take => PageSize;
+
+        
     }
 
 
