@@ -15,5 +15,9 @@ namespace Application.DTOs
         public string Email { get; set; }
         public string Phone { get; set; }
         public int Level { get; set; }
+
+        public int XP {  get; set; }
+
+        public int CoinsBalance { get; set; }
     }
 }

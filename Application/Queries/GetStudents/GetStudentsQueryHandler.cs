@@ -29,7 +29,9 @@ namespace Application.Queries.GetStudents
                     LastName = s.LastName,
                     Email = s.Email,
                     Phone = s.Phone,
-                    Level = s.Level
+                    Level = s.Level,
+                    XP = s.XP,
+                    CoinsBalance = s.CoinBalnce,
                 }),
                 Page = request.Page,
                 PageSize = request.PageSize,

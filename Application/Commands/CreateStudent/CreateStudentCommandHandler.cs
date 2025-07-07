@@ -32,8 +32,7 @@ namespace Application.Commands.CreateStudent
                 request.FirstName,
                 request.LastName,
                 request.Email,
-                request.Phone,
-                request.Level
+                request.Phone
             );
 
             student.EnrollInGroup(group);
