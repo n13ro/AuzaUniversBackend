@@ -9,40 +9,40 @@ namespace Domain.Entities
 {
     public class Coin : BaseEntity
     {
-        public decimal Amount { get; private set; }
+        //public int Amount { get; private set; }
 
-        private readonly List<Student> _students = new();
+        //private readonly List<Student> _students = new();
 
-        public IReadOnlyCollection<Student> Students => _students.AsReadOnly();
+        //public ICollection<Student> Students => _students;
 
-        private Coin() { }
+        //private Coin() { }
 
-        public Coin(decimal amount)
-        {
-            Amount = amount;
-        }
+        //public Coin(int amount)
+        //{
+        //    Amount = amount;
+        //}
 
-        public void AssignToStudent(Student student)
-        {
+        //public void AssignToStudent(Student student)
+        //{
+        //    student.AddCoin(10);
+        //    _students.Add(student);
+        //    SetUpdate();
+        //}
 
-            _students.Add(student);
-            SetUpdate();
-        }
+        //public void RemoveFromStudent(Student student)
+        //{
 
-        public void RemoveFromStudent(Student student)
-        {
+        //    if (_students.Remove(student))
+        //    {
+        //        SetUpdate();
+        //    }
+        //}
 
-            if (_students.Remove(student))
-            {
-                SetUpdate();
-            }
-        }
+        //public void UpdateAmount(int newAmount)
+        //{
+        //    Amount = newAmount;
+        //    SetUpdate();
 
-        public void UpdateAmount(decimal newAmount)
-        {
-            Amount = newAmount;
-            SetUpdate();
-
-        }
+        //}
     }
 }

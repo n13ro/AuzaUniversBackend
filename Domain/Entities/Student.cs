@@ -16,29 +16,31 @@ namespace Domain.Entities
         public int Level { get; private set; }
         [Range(1, 1000)]
         public int XP { get; private set; }
+        [Range(1, int.MaxValue)]
+        public int CoinBalnce { get; private set; }
 
-        private readonly List<Coin> _coins = new();
-        public IReadOnlyCollection<Coin>? Coins => _coins.AsReadOnly();
+        //private readonly List<Coin> _coins = new();
+        private readonly List<Achievement> _achievements = new();
+        //public ICollection<Coin>? Coins => _coins;
+        public ICollection<Achievement>? Achievement => _achievements;
 
         public int MyGroupId { get; set; }
         public Group? MyGroup { get; set; }
         
         private Student() { }
 
-        public Student(string name, string firstName, string lastName, string email, string phone, int level)
+        public Student(string name, string firstName, string lastName, string email, string phone)
         {
-            ValidateStudentData(name, firstName, lastName, email, phone, level);
+            ValidateStudentData(name, firstName, lastName, email, phone);
             Name = name;
             FirstName = firstName;
             LastName = lastName;
             Email = email;
             Phone = phone;
-            Level = level;
-            XP = 0;
             SetUpdate();
         }
 
-        private void ValidateStudentData(string name, string firstName, string lastName, string email, string phone, int level)
+        private void ValidateStudentData(string name, string firstName, string lastName, string email, string phone)
         {
             if(string.IsNullOrWhiteSpace(name))
             {
@@ -60,10 +62,6 @@ namespace Domain.Entities
             {
                 throw new ValidationException("Phone cannot be empty");
             }
-            if (level < 1 || level > 100 )
-            {
-                throw new ValidationException("Level between 1 and 100");
-            }
         }
 
         public void EnrollInGroup(Group group)
@@ -75,11 +73,11 @@ namespace Domain.Entities
             SetUpdate();
         }
 
-        public void AddCoin(Coin coin)
+        public void AddCoin(int amount)
         {
-            if (coin == null) throw new ArgumentNullException("coin null");
+            if (amount == null) throw new ArgumentNullException("amount null");
 
-            _coins.Add(coin);
+            CoinBalnce += amount;
             SetUpdate();
         }
         
