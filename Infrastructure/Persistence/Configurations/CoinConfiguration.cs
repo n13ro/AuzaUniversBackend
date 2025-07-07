@@ -11,8 +11,8 @@ namespace Infrastructure.Persistence.Configurations
         {
             //
             
-            builder.HasIndex(k => k.Id);
-            builder.Property(c => c.Id).IsConcurrencyToken();
+            //builder.HasIndex(k => k.Id);
+            //builder.Property(c => c.Id).IsConcurrencyToken();
         }
     }
 }

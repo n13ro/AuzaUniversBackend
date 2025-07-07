@@ -11,7 +11,7 @@ namespace Infrastructure.Persistence.Context
         public DbSet<Group> Groups { get; set; }
         public DbSet<Mentor> Mentors { get; set; }
         public DbSet<Pair> Pairs { get; set; }
-        public DbSet<Coin> Coins { get; set; }
+        //public DbSet<Coin> Coins { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
