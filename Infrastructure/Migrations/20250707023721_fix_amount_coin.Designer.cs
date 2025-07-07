@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250707023721_fix_amount_coin")]
+    partial class fix_amount_coin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -78,6 +81,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -214,6 +220,9 @@ namespace Infrastructure.Migrations
                     b.Property<int>("CoinBalnce")
                         .HasColumnType("integer");
 
+                    b.Property<int?>("CoinId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -250,6 +259,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CoinId");
 
                     b.HasIndex("Id")
                         .IsUnique();
@@ -317,6 +328,10 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Student", b =>
                 {
+                    b.HasOne("Domain.Entities.Coin", null)
+                        .WithMany("Students")
+                        .HasForeignKey("CoinId");
+
                     b.HasOne("Domain.Entities.Group", "MyGroup")
                         .WithMany("Students")
                         .HasForeignKey("MyGroupId")
@@ -354,6 +369,11 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("MyPairsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.Coin", b =>
+                {
+                    b.Navigation("Students");
                 });
 
             modelBuilder.Entity("Domain.Entities.Group", b =>
