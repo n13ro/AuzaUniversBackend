@@ -20,14 +20,22 @@ namespace Infrastructure.Persistence.Configurations
             //    .UsingEntity(j => j.ToTable("StudentPairs"));
 
             // Student - Group (One-to-Many)
-            builder.HasOne(s => s.MyGroup)
+            builder
+                .HasOne(s => s.MyGroup)
                 .WithMany(g => g.Students)
                 .HasForeignKey(k => k.MyGroupId);
 
             // Student - Coin (Many-to-Many)
-            builder.HasMany(s => s.Coins)
-                .WithMany(c => c.Students)
-                .UsingEntity(j => j.ToTable("StudentCoins"));
+            //builder
+            //    .HasMany(s => s.Coins)
+            //    .WithMany(c => c.Students)
+            //    .UsingEntity(j => j.ToTable("StudentCoins"));
+
+            // Student - Achievements (Many-to-Many)
+            builder
+                .HasMany(s => s.Achievement)
+                .WithMany(s => s.Students)
+                .UsingEntity(j => j.ToTable("AchievementsStudents"));
 
             builder.HasIndex(s => s.Id).IsUnique();
             builder.Property(s => s.Id).IsConcurrencyToken();
