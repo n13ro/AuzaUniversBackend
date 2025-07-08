@@ -73,6 +73,15 @@ namespace Domain.Entities
             SetUpdate();
         }
 
+        public void EnrollInNewGroup(Group newGroup)
+        {
+            if(newGroup == null) throw new ArgumentNullException("group null");
+
+            MyGroup = newGroup;
+            MyGroupId = newGroup.Id;
+            SetUpdate();
+        }
+
         public void AddCoin(int amount)
         {
             if (amount == null) throw new ArgumentNullException("amount null");
@@ -83,6 +92,8 @@ namespace Domain.Entities
         
         public void AddXP(int amount)
         {
+            if (amount <= 0) throw new ArgumentNullException("xp null");
+
             XP += amount;
             while (XP >= 1000)
             {

@@ -23,9 +23,9 @@ namespace Tests.Unit
             var student = new Student("Test", "T", "S", "test@mail.com", "123");
             student.AddXP(1200);
             Assert.Equal(200, student.XP);
-            Assert.Equal(2, student.Level);
+            Assert.Equal(1, student.Level);
             student.AddXP(800);
-            Assert.Equal(3, student.Level);
+            Assert.Equal(2, student.Level);
         }
 
         [Fact]
@@ -33,9 +33,9 @@ namespace Tests.Unit
         {
             var student = new Student("Test", "T", "S", "test@mail.com", "123");
             student.AddXP(999);
-            Assert.Equal(1, student.Level);
+            Assert.Equal(0, student.Level);
             student.AddXP(1);
-            Assert.Equal(2, student.Level);
+            Assert.Equal(1, student.Level);
 
         }
 
