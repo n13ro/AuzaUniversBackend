@@ -42,6 +42,7 @@ namespace Domain.Entities
 
         private void ValidateStudentData(string name, string firstName, string lastName, string email, string phone)
         {
+            
             if(string.IsNullOrWhiteSpace(name))
             {
                 throw new ValidationException("Name cannot be empty");
